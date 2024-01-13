@@ -12,12 +12,12 @@ const NftCard = ({ title, author, price, image, bidders, extra }) => {
         <div className="relative w-full">
           <img
             src={image}
-            className="mb-3 h-full w-full rounded-xl 3xl:h-full 3xl:w-full"
+            className="mb-3 h-full w-full rounded-xl 3xl:h-full 3xl:w-full border border-black"
             alt=""
           />
           <button
             onClick={() => setHeart(!heart)}
-            className="absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 text-brand-500 hover:cursor-pointer"
+            className="absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 text-brand-500 hover:cursor-pointer border border-black"
           >
             <div className="flex h-full w-full items-center justify-center rounded-full text-xl hover:bg-gray-50 dark:text-navy-900">
               {heart ? (

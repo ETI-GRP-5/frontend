@@ -63,5 +63,40 @@ const routes = [
     icon: <MdHome className="h-6 w-6" />,
     component: <RTLDefault />,
   },
+  {
+    name: "Profile Settings",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <RTLDefault />,
+  },
+  {
+    name: "Community Organizations",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <RTLDefault />,
+  },
+  {
+    name: "Community Projects",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <RTLDefault />,
+  },
+  {
+    name: "Community Forum",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <RTLDefault />,
+  },
+  {
+    name: "Notifications",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <RTLDefault />,
+  },
 ];
 export default routes;

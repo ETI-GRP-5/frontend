@@ -117,6 +117,16 @@ module.exports = {
       borderRadius: {
         primary: "20px",
       },
+      borderWidth: {
+        DEFAULT: "1.5px",
+        '1': '1px',
+        '1.5': '1.5px',
+        '2': '2px',
+        '3': '3px',
+        '4': '4px',
+        '6': '6px',
+        '8': '8px',
+      },
     },
     screens: {
       sm: "576px",
@@ -136,7 +146,8 @@ module.exports = {
     },
     colors: () => ({
       white: "#ffffff",
-      lightPrimary: "#F4F7FE",
+      black: "#000000",
+      lightPrimary: "#FEF7F3",
       blueSecondary: "#4318FF",
       brandLinear: "#868CFF",
       gray: {
