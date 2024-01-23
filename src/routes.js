@@ -8,6 +8,7 @@ import DataTables from "views/admin/tables";
 import RTLDefault from "views/rtl/default";
 import CommunityProjects from "views/admin/projects";
 import CommunityForum from "views/admin/forum";
+import SearchView from "views/admin/search"; //New search in side bar
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";
@@ -20,6 +21,8 @@ import {
   MdPerson,
   MdLock,
 } from "react-icons/md";
+import { FaSearch } from 'react-icons/fa';
+
 
 const routes = [
   {
@@ -99,6 +102,13 @@ const routes = [
     path: "rtl",
     icon: <MdHome className="h-6 w-6" />,
     component: <Profile />,
+  },
+  {
+    name: "Search",
+    layout: "/admin",
+    path: "search/:query", // Adjust the path to include the search query as a parameter
+    icon: <FaSearch className="h-6 w-6" />,
+    component: <SearchView />,
   },
 ];
 export default routes;
