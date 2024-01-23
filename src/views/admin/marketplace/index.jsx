@@ -22,8 +22,8 @@ const Marketplace = () => {
         <Banner />
 
         {/* NFt Header */}
-        <div className="mb-4 mt-5 flex flex-col justify-between px-4 md:flex-row md:items-center">
-          <h4 className="ml-1 text-2xl font-bold text-navy-700 dark:text-white">
+        <div className="mb-4 mt-5 flex flex-col justify-between px-[16px] md:flex-row md:items-center">
+          <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
             Trending NFTs
           </h4>
           <ul className="mt-4 flex items-center justify-between md:mt-0 md:justify-center md:!gap-5 2xl:!gap-12">
@@ -88,7 +88,7 @@ const Marketplace = () => {
         </div>
 
         {/* Recenlty Added setion */}
-        <div className="mb-5 mt-5 flex items-center justify-between px-[26px]">
+        <div className="mb-5 mt-5 flex items-center justify-between px-[16px]">
           <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
             Recently Added
           </h4>

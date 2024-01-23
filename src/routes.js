@@ -6,6 +6,8 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import RTLDefault from "views/rtl/default";
+import CommunityProjects from "views/admin/projects";
+import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
 
 // Auth Imports
@@ -67,11 +69,46 @@ const routes = [
     component: <RTLDefault />,
   },
   {
+    name: "Profile Settings",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <Profile />,
+  },
+  {
+    name: "Community Organizations",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <Profile />,
+  },
+  {
+    name: "Community Projects",
+    layout: "/admin",
+    path: "projects",
+    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    component: <CommunityProjects />,
+  },
+  {
+    name: "Community Forum",
+    layout: "/admin",
+    path: "forum",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <CommunityForum />,
+  },
+  {
+    name: "Notifications",
+    layout: "/rtl",
+    path: "rtl",
+    icon: <MdHome className="h-6 w-6" />,
+    component: <Profile />,
+  },
+  {
     name: "Search",
-  layout: "/admin",
-  path: "search/:query", // Adjust the path to include the search query as a parameter
-  icon: <FaSearch className="h-6 w-6" />,
-  component: <SearchView />,
+    layout: "/admin",
+    path: "search/:query", // Adjust the path to include the search query as a parameter
+    icon: <FaSearch className="h-6 w-6" />,
+    component: <SearchView />,
   },
 ];
 export default routes;
