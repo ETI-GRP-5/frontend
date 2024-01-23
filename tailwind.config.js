@@ -118,7 +118,7 @@ module.exports = {
         primary: "20px",
       },
       borderWidth: {
-        DEFAULT: "1.5px",
+        DEFAULT: '1.5px',
         '1': '1px',
         '1.5': '1.5px',
         '2': '2px',
@@ -147,7 +147,7 @@ module.exports = {
     colors: () => ({
       white: "#ffffff",
       black: "#000000",
-      lightPrimary: "#FEF7F3",
+      lightPrimary: "#FFFFFF",
       blueSecondary: "#4318FF",
       brandLinear: "#868CFF",
       gray: {
@@ -335,5 +335,8 @@ module.exports = {
       },
     }),
   },
-  plugins: [require("tailwindcss-rtl")],
+  plugins: [
+    require("tailwindcss-rtl"),
+    require('@tailwindcss/line-clamp'),
+  ],
 };

@@ -6,6 +6,8 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import RTLDefault from "views/rtl/default";
+import CommunityProjects from "views/admin/projects";
+import CommunityForum from "views/admin/forum";
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";
@@ -68,35 +70,35 @@ const routes = [
     layout: "/rtl",
     path: "rtl",
     icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    component: <Profile />,
   },
   {
     name: "Community Organizations",
     layout: "/rtl",
     path: "rtl",
     icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    component: <Profile />,
   },
   {
     name: "Community Projects",
-    layout: "/rtl",
-    path: "rtl",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    layout: "/admin",
+    path: "projects",
+    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    component: <CommunityProjects />,
   },
   {
     name: "Community Forum",
-    layout: "/rtl",
-    path: "rtl",
+    layout: "/admin",
+    path: "forum",
     icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    component: <CommunityForum />,
   },
   {
     name: "Notifications",
     layout: "/rtl",
     path: "rtl",
     icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    component: <Profile />,
   },
 ];
 export default routes;
