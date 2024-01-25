@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
+import { getAuth, signOut } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
 import {
   IoMdNotificationsOutline,
   IoMdInformationCircleOutline,
@@ -14,7 +16,19 @@ import avatar from "assets/img/avatars/avatar4.png";
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
-  const [darkmode, setDarkmode] = React.useState(false);
+  const [darkmode, setDarkmode] = useState(false);
+  const { user } = useAuth();
+  const auth = getAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () =>{
+    signOut(auth).then(() => {
+      navigate('/auth/sign-in');
+    }).catch((error) => {
+      console.log(error)
+      alert("Something went wrong");
+    });
+  }
 
   return (
     <nav className="top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-md bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -180,7 +194,7 @@ const Navbar = (props) => {
           button={
             <img
               className="h-10 w-10 rounded-md border border-black"
-              src={avatar}
+              src={auth === null ? avatar : (auth.currentUser ? auth.currentUser.photoURL : avatar)}
               alt="Elon Musk"
             />
           }
@@ -189,7 +203,7 @@ const Navbar = (props) => {
               <div className="p-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, Adela
+                    👋 Hey, {auth === null ? "User" : (auth.currentUser ? auth.currentUser.displayName : "User")}
                   </p>{" "}
                 </div>
               </div>
@@ -210,6 +224,7 @@ const Navbar = (props) => {
                 </a> */}
                 <a
                   href=" "
+                  onClick={()=>handleLogout()}
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
                 >
                   Log Out
@@ -217,7 +232,8 @@ const Navbar = (props) => {
               </div>
             </div>
           }
-          classNames={"py-2 top-8 -left-[180px] w-max"}
+          // classNames={"py-2 top-9 right-0 -start-[250px] md:-start-[330px] w-max absolute z-10"} //this the original 
+          classNames={"py-2 top-8 left-0 -start-[180px] w-max"}
         />
       </div>
     </nav>
