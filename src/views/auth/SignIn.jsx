@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword} from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 import { useAuth } from "provider/AuthProvider";
+import GoogleLogin from "api/auth/googleLogin";
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -68,10 +69,16 @@ export default function SignIn() {
   };
 
   const handleGoogleLogin = async () => {
+    provider.setCustomParameters({ prompt: 'select_account' });
     try {
       await signInWithPopup(auth, provider)
-        .then(()=>{
+        .then(async (data)=>{
+          const res = await GoogleLogin(data.user);
+          if(res.ok){
             navigate('/admin');
+          } else{
+            alert("Something went wrong");
+          }
         })
     } catch (error) {
       // Handle errors during sign-in

@@ -19,11 +19,10 @@ const Navbar = (props) => {
   const [darkmode, setDarkmode] = useState(false);
   const { user } = useAuth();
   const auth = getAuth();
-  const navigate = useNavigate();
 
   const handleLogout = () =>{
     signOut(auth).then(() => {
-      navigate('/auth/sign-in');
+      console.log("sign out");
     }).catch((error) => {
       console.log(error)
       alert("Something went wrong");
@@ -194,8 +193,9 @@ const Navbar = (props) => {
           button={
             <img
               className="h-10 w-10 rounded-md border border-black"
-              src={auth === null ? avatar : (auth.currentUser ? auth.currentUser.photoURL : avatar)}
+              src={auth === null ? avatar : (auth.currentUser ? (auth.currentUser.photoURL !== null ? auth.currentUser.photoURL : avatar) : avatar)}
               alt="Elon Musk"
+              referrerpolicy="no-referrer"
             />
           }
           children={
