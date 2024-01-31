@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	_ "github.com/go-sql-driver/mysql"
@@ -47,6 +48,7 @@ func main() {
 }
 
 var storageClient *storage.Client
+var firestoreClient *firestore.Client
 
 // initialize firebase
 func initFirebase() error {
@@ -64,6 +66,12 @@ func initFirebase() error {
 		return fmt.Errorf("error initializing Cloud Storage client: %v", err)
 	}
 
+	// Use firestore.NewClient to create a Firestore client
+	firestoreClient, err = firestore.NewClient(ctx, projectID, option.WithCredentialsFile(firebaseConfig))
+	if err != nil {
+		return fmt.Errorf("error initializing Firestore client: %v", err)
+	}
+
 	storageClient = client
 	fmt.Println("Option:", opt)
 	fmt.Println("App:", app)
@@ -76,7 +84,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, _, err := r.FormFile("file")
+	file, header, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, "Error retrieving file from form: "+err.Error(), http.StatusBadRequest)
 		return
@@ -87,12 +95,13 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	bucket := storageClient.Bucket(storageBucket)
+
 	if err != nil {
 		http.Error(w, "Error getting bucket: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	objectName := "uploads/" + time.Now().Format("20060102150405") + "_" + r.Header.Get("Content-Type")
+	objectName := "resource/" + header.Filename
 
 	wc := bucket.Object(objectName).NewWriter(ctx)
 	defer wc.Close()
@@ -102,6 +111,29 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Add file info to Firestore
+	fileInfo := FileInfo{
+		Name:     header.Filename,
+		FilePath: fmt.Sprintf("gs://%s/%s", storageBucket, objectName),
+	}
+
+	if err := addFileInfoToFirestore(ctx, fileInfo); err != nil {
+		http.Error(w, fmt.Sprintf(`{"error": "Error adding file info to Firestore: %s"}`, err.Error()), http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("File uploaded successfully"))
+	w.Write([]byte(`{"message": "File uploaded successfully"}`))
+}
+
+// helper function to add fileinfo to firestore
+func addFileInfoToFirestore(ctx context.Context, fileInfo FileInfo) error {
+	// Assuming you have a Firestore collection named "files"
+	docRef, _, err := firestoreClient.Collection("resource").Add(ctx, fileInfo)
+	if err != nil {
+		return fmt.Errorf("error adding file info to Firestore: %v", err)
+	}
+
+	fmt.Printf("File info added to Firestore with ID: %s\n", docRef.ID)
+	return nil
 }

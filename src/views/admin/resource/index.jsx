@@ -8,8 +8,8 @@ const ResourceUpload = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
-    const [setFileUrl] = useState('');
-    const [setLocalFilePath] = useState('');
+    const [fileUrl, setFileUrl] = useState('');
+    const [localFilePath, setLocalFilePath] = useState('');
 
     const handleUpload = () => {
         // Open the modal 
@@ -59,6 +59,7 @@ const ResourceUpload = () => {
                 // Set the file URL and local file path for display
                 setFileUrl(data.file_url);
                 setLocalFilePath(data.local_file_path);
+                window.location.reload();
             } else {
                 console.error('File upload failed');
             }
@@ -98,7 +99,7 @@ const ResourceUpload = () => {
                 )}
                 <div>
                     <button style={{ marginRight: '40px', marginTop: '100px' }} disabled={isUploading} onClick={uploadToDatabase}>
-                        {isUploading ? 'Uploading...' : 'Upload to Database'}
+                        {isUploading ? 'Uploading...' : 'Upload'}
                     </button>
                     <button onClick={closeModal}>Close</button>
                 </div>
