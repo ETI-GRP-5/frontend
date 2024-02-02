@@ -6,15 +6,29 @@ const SearchView = () => {
   const [selectedSdg, setSelectedSdg] = useState(null);
 
   // Function to handle search
-  const handleSearch = () => {
-    // Perform search based on the query (you can implement this logic)
-    // For now, let's assume an empty result set
-    setSearchResults([]);
+  const handleSearch = async () => {
+    try {
+      // Make an HTTP request to your Go server's search endpoint
+      const response = await fetch(`http://localhost:8080/api/search?query=${query}`);
+      
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      const result = await response.json();
+
+      // Update the searchResults state with the obtained data
+      setSearchResults(result.results);
+    } catch (error) {
+      console.error('Error during search:', error);
+      // Handle the error, e.g., display an error message to the user
+    }
   };
 
   // Data for all 17 SDGs with names and descriptions
   const sdgsData = [
-    // ... (other SDGs)
     {
         id: 1,
         name: 'No Poverty',

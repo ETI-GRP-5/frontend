@@ -9,6 +9,7 @@ import RTLDefault from "views/rtl/default";
 import CommunityProjects from "views/admin/projects";
 import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
+import FileUploadView from "views/admin/resource" //For testing purpose, should not be included with the navbar
 // import ProjectDetails from "../src/components/project/ProjectDetails.jsx";
 import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
 import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";
@@ -136,6 +137,13 @@ const routes = [
     path: "search/:query", // Adjust the path to include the search query as a parameter
     icon: <FaSearch className="h-6 w-6" />,
     component: <SearchView />,
+  },
+  {//For testing of resource upload (Simon)
+    name: "Resource",
+    layout: "/admin",
+    path: "resource", // Adjust the path to include the search query as a parameter
+    icon: <MdHome className="h-6 w-6" />,
+    component: <FileUploadView />,
   },
 ];
 export default routes;
