@@ -17,7 +17,7 @@ const Navbar = (props) => {
   const [darkmode, setDarkmode] = React.useState(false);
 
   return (
-    <nav className="top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-md bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
+    <nav className="top-5 z-40 flex flex-row flex-wrap items-center justify-between rounded-md bg-white/10 px-3 py-5 backdrop-blur-xl dark:bg-[#0b14374d]">
       <div className="ml-[6px]">
         <div className="h-6 w-[224px] pt-1">
           <a
@@ -55,7 +55,7 @@ const Navbar = (props) => {
           <input
             type="text"
             placeholder="Search..."
-            class="block h-full w-full rounded-md bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
+            class="block h-full w-full rounded-md bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit border-none"
           />
         </div>
         <span
