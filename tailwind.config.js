@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "node_modules/flowbite-react/lib/esm/**/*.js",
+    "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js"
+  ],
   theme: {
     extend: {
       width: {
@@ -118,7 +122,7 @@ module.exports = {
         primary: "20px",
       },
       borderWidth: {
-        DEFAULT: '1.5px',
+        DEFAULT: '1px',
         '1': '1px',
         '1.5': '1.5px',
         '2': '2px',
@@ -338,5 +342,6 @@ module.exports = {
   plugins: [
     require("tailwindcss-rtl"),
     require('@tailwindcss/line-clamp'),
+    require('flowbite/plugin'),
   ],
 };
