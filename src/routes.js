@@ -10,6 +10,9 @@ import CommunityProjects from "views/admin/projects";
 import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
 import FileUploadView from "views/admin/resource" //For testing purpose, should not be included with the navbar
+// import ProjectDetails from "../src/components/project/ProjectDetails.jsx";
+import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
+import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";
@@ -91,6 +94,17 @@ const routes = [
     icon: <MdOutlineShoppingCart className="h-6 w-6" />,
     component: <CommunityProjects />,
   },
+
+  {
+    name: " ",
+    layout: "/admin",
+    path: "projects/:id",
+    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    component: <ProjectDetails />,
+    css: "hidden",
+  },
+
+
   {
     name: "Community Forum",
     layout: "/admin",
@@ -98,6 +112,17 @@ const routes = [
     icon: <MdHome className="h-6 w-6" />,
     component: <CommunityForum />,
   },
+
+  {
+    name: " ",
+    layout: "/admin",
+    path: "forum/:id",
+    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    component: <DiscussionDetails />,
+    css: "hidden",
+  },
+
+
   {
     name: "Notifications",
     layout: "/admin",

@@ -7,10 +7,10 @@ const NftCard = ({ title, color, alt, extra }) => {
     <Card
       extra={`flex flex-col w-full h-full bg-white ${extra}`}
     >
-      <button className="h-full w-full transition duration-200">
+      <button className="h-full w-full transition duration-200 ">
         <div className="relative w-full">
-          <div className={`h-[7rem] max-w-full min-w-[15rem] rounded-md ${color} `}/>
-        </div>
+          <div className={`h-[7rem] max-w-full min-w-[15rem] rounded-md ${color} hover:cursor-pointer hover:bg-opacity-80`}/>
+        </div>          
 
         <div className="absolute bottom-3 left-1 flex items-center justify-between px-5 md:flex-col md:items-start w-full">
 

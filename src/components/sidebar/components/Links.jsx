@@ -24,7 +24,7 @@ export function SidebarLinks(props) {
       ) {
         return (
           <Link key={index} to={route.layout + "/" + route.path}>
-            <div className="relative mb-3 flex hover:cursor-pointer">
+            <div className={`${route.css} relative mb-3 flex hover:cursor-pointer`}>
               <li
                 className="my-[3px] flex cursor-pointer items-center px-8"
                 key={index}
