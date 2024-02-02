@@ -1,0 +1,87 @@
+[
+    {
+        "name": "No Poverty",
+        "number": "SDG 1",
+        "colour": "bg-[#E5243B]"
+    },
+    {
+        "name": "Zero Hunger",
+        "number": "SDG 2",
+        "colour": "bg-[#DDA83A]"
+    },
+    {
+        "name": "Good Health and Well-being",
+        "number": "SDG 3",
+        "colour": "bg-[#4C9F38]"
+    },
+    {
+        "name": "Quality Education",
+        "number": "SDG 4",
+        "colour": "bg-[#C5192D]"
+    },
+    {
+        "name": "Gender Equality",
+        "number": "SDG 5",
+        "colour": "bg-[#FF3A21]"
+    },
+    {
+        "name": "Clean Water and Sanitation",
+        "number": "SDG 6",
+        "colour": "bg-[#26BDE2]"
+    },
+    {
+        "name": "Affordable and Clean Energy",
+        "number": "SDG 7",
+        "colour": "bg-[#FCC30B]"
+    },
+    {
+        "name": "Decent Work and Economic Growth",
+        "number": "SDG 8",
+        "colour": "bg-[#A21942]"
+    },
+    {
+        "name": "Industry, Innovation and Infrastructure",
+        "number": "SDG 9",
+        "colour": "bg-[#FD6925]"
+    },
+    {
+        "name": "Reduced Inequality",
+        "number": "SDG 10",
+        "colour": "bg-[#DD1367]"
+    },
+    {
+        "name": "Sustainable Cities and Communities",
+        "number": "SDG 11",
+        "colour": "bg-[#FD9D24]"
+    },
+    {
+        "name": "Responsible Consumption and Production",
+        "number": "SDG 12",
+        "colour": "bg-[#BF8B2E]"
+    },
+    {
+        "name": "Climate Action",
+        "number": "SDG 13",
+        "colour": "bg-[#3F7E44]"
+    },
+    {
+        "name": "Life Below Water",
+        "number": "SDG 14",
+        "colour": "bg-[#0A97D9]"
+    },
+    {
+        "name": "Life on Land",
+        "number": "SDG 15",
+        "colour": "bg-[#56C02B]"
+    },
+    {
+        "name": "Peace, Justice and Strong Institutions",
+        "number": "SDG 16",
+        "colour": "bg-[#00689D]"
+    },
+    {
+        "name": "Partnerships for the Goals",
+        "number": "SDG 17",
+        "colour": "bg-[#19486A]"
+    }
+]
