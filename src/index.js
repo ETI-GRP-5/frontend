@@ -9,7 +9,6 @@ import { initializeApp } from 'firebase/app';
 import App from "./App";
 
 // Initialize Firebase
-// woop woop 
 const app = initializeApp(firebaseConfig);
 getAuth(app);
 
