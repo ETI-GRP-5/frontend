@@ -193,7 +193,7 @@ const Navbar = (props) => {
           button={
             <img
               className="h-10 w-10 rounded-md border border-black"
-              src={auth === null ? avatar : (auth.currentUser ? (auth.currentUser.photoURL !== null ? auth.currentUser.photoURL : avatar) : avatar)}
+              src={user === null ? avatar : (user ? (user.photoURL !== null ? user.photoURL : avatar) : avatar)}
               alt="Elon Musk"
               referrerpolicy="no-referrer"
             />
@@ -203,7 +203,7 @@ const Navbar = (props) => {
               <div className="p-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, {auth === null ? "User" : (auth.currentUser ? auth.currentUser.displayName : "User")}
+                    👋 Hey, {user === null ? "User" : (user ? user.displayName : "User")}
                   </p>{" "}
                 </div>
               </div>

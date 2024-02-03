@@ -3,7 +3,7 @@ import avatar from "assets/img/avatars/avatar11.png";
 import banner from "assets/img/profile/banner.png";
 import Card from "components/card";
 import { MdModeEditOutline } from "react-icons/md";
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile as authUpateProfile } from "firebase/auth";
 import { useAuth } from "provider/AuthProvider";
 import { useState } from 'react';
 import UploadProfilePic from "api/auth/uploadProfilePic";
@@ -21,7 +21,16 @@ const Banner = () => {
     setSelectedImage(file);
     const res = await UploadProfilePic(file);
     if(res.ok){
-      console.log("profile changed");
+      const img = await res.json();
+      if( user && auth && auth.currentUser){
+        try{
+          await authUpateProfile(user, { photoURL: img.downloadURL }).then(()=>{
+            console.log("User's photoURL updated successfully");
+          })
+        } catch (error){
+          console.log(error);
+        }
+      }
     } else{
       console.log("something went wrong");
     }
