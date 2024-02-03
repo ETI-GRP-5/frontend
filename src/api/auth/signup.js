@@ -1,3 +1,6 @@
+import ApiRoutes from "../../ApiRoutes";
+const apiRoutes = new ApiRoutes();
+
 async function SignUp(data) {
     const requestOptions = {
       credentials: "include",
@@ -11,7 +14,7 @@ async function SignUp(data) {
   
     try {
         const response = await fetch(
-            "http://" + "localhost:3018" + "/signup",
+            "http://" + apiRoutes.authSVC + "/signup",
             requestOptions
         );
     

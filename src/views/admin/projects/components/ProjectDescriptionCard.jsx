@@ -3,6 +3,7 @@ import SDGs from "../variables/sdg.json"
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition, Menu } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import GetProjectDataById from "../../../../api/project/getProjectDataById";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -15,16 +16,18 @@ export default function ProjectDescriptionCard (props) {
     useEffect(() => {
 
         const projectId = localStorage.getItem("projectId");
-        console.log(`http://localhost:3010/getProject/${projectId}`)
         //fetch the api in a try catch block
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
-                const json = await response.json();
+                // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+                const response = await GetProjectDataById(projectId);
+                if (response.status == "Success") {
+                    setProject(response.data.projectData);
+                }
+                console.log("response", response);
+                //const json = await response.json();
                 // sortSdg(json);
                 // setSdg(json);
-                setProject(json.projectData);
-                console.log("json", json.projectData);
             } catch (error) {
                 console.log("error", error);
             }
@@ -69,7 +72,7 @@ export default function ProjectDescriptionCard (props) {
         const imageURL = require(`../../../../assets/img/sdg-icons/${project.category}.png`);
         const backgroundColour = findSDGColour(project.category);
         return (
-            <Card extra={"mt-3 !z-5 overflow-hidden"}>
+            <Card extra={"mt-3 z-0 overflow-hidden"}>
                 {/* Project Description Card */}
                 <div className="z-20 grid grid-cols-1 divide-x-[1px] divide-black md:grid-cols-3 bg-white rounded-md border border-black">
     

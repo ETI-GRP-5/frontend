@@ -1,3 +1,6 @@
+import ApiRoutes from "../../ApiRoutes";
+const apiRoutes = new ApiRoutes();
+
 async function UploadProfilePic(data) {
     const formData = new FormData();
     formData.append('image', data);
@@ -6,11 +9,11 @@ async function UploadProfilePic(data) {
         method: "POST",
         body: formData,
         redirect: "follow",
-      };
+    };
   
     try {
         const response = await fetch(
-            "http://" + "localhost:3018" + "/changeProfilePic",
+            "http://" + apiRoutes.authSVC + "/changeProfilePic",
             requestOptions
         );
     

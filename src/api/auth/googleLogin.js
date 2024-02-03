@@ -1,17 +1,21 @@
+import ApiRoutes from "../../ApiRoutes";
+const apiRoutes = new ApiRoutes();
+
+
 async function GoogleLogin(data) {
     const requestOptions = {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data),
-      redirect: "follow",
+        credentials: "include",
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+        redirect: "follow",
     };
   
     try {
         const response = await fetch(
-            "http://" + "localhost:3018" + "/google-login",
+            "http://" + apiRoutes.authSVC + "/google-login",
             requestOptions
         );
     

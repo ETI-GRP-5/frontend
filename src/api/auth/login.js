@@ -1,3 +1,7 @@
+import ApiRoutes from "../../ApiRoutes";
+const apiRoutes = new ApiRoutes();
+
+
 async function Login(data) {
     const requestOptions = {
       credentials: "include",
@@ -11,7 +15,7 @@ async function Login(data) {
   
     try {
         const response = await fetch(
-            "http://" + "localhost:3018" + "/login",
+            "http://" + apiRoutes.authSVC + "/login",
             requestOptions
         );
     
