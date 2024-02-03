@@ -9,7 +9,7 @@ import RTLDefault from "views/rtl/default";
 import CommunityProjects from "views/admin/projects";
 import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
-import FileUploadView from "views/admin/resource" //For testing purpose, should not be included with the navbar
+import FileUploadView from "views/admin/resource"
 // import ProjectDetails from "../src/components/project/ProjectDetails.jsx";
 import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
 import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";

@@ -1,5 +1,5 @@
 // resource > index.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 // for icon
 import { FaUpload } from "react-icons/fa";
@@ -10,12 +10,33 @@ const ResourceUpload = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
     const [localFilePath, setLocalFilePath] = useState('');
+    const [resources, setResources] = useState([]);
+
+    useEffect(() => {
+        console.log('Fetching resources...');
+        const fetchResources = async () => {
+            try {
+                const response = await fetch('http://localhost:3011/showresource');
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Fetched resources:', data);
+                    setResources(data);
+                } else {
+                    console.error('Failed to fetch resources:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching resources:', error.message);
+            }
+        };
+
+        fetchResources();
+    }, []);
+
 
     const handleUpload = () => {
         // Open the modal 
         setModalOpen(true);
     };
-
     const handleFileUpload = (e) => {
         const selectedFiles = e.target.files;
         if (!selectedFiles || selectedFiles.length === 0) {
@@ -39,6 +60,22 @@ const ResourceUpload = () => {
             margin: 'auto', // Center the modal
         },
     };
+    const handleDownload = (filePath) => {
+        const downloadUrl = `http://localhost:3011/download?filePath=${encodeURIComponent(filePath)}`;
+
+        // Create a hidden link element
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.target = '_blank';
+        link.download = filePath.split('/').pop(); // Set the downloaded file name
+
+        // Append the link to the body and trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Remove the link from the DOM
+        document.body.removeChild(link);
+    };
 
     // for fetch 
     const uploadToDatabase = async () => {
@@ -47,7 +84,7 @@ const ResourceUpload = () => {
 
         try {
             setIsUploading(true);
-            const response = await fetch('http://localhost:5050/resource', {
+            const response = await fetch('http://localhost:3011/resource', {
                 method: 'POST',
                 body: formData,
             });
@@ -72,6 +109,7 @@ const ResourceUpload = () => {
 
     return (
         <div>
+
             <button style={{
                 border: '1px solid black',
                 padding: '10px',
@@ -79,7 +117,26 @@ const ResourceUpload = () => {
 
             }} onClick={handleUpload}>
                 Upload <FaUpload style={{ marginRight: '50px' }} /></button>
-            {/* modal content */}
+            <div style={{ marginTop: '100px' }}>
+                <h1>Resource List</h1>
+                {resources.length > 0 ? (
+                    <ul>
+                        {resources.map((resource, index) => (
+                            <li key={index}>
+                                <p>Name: {resource.Name}</p>
+                                <p>Path: {resource.FilePath}</p>
+                                <button onClick={() => handleDownload(resource.FilePath)}>
+                                    Download
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No resource has been uploaded.</p>
+                )}
+
+            </div>
+            { }
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
