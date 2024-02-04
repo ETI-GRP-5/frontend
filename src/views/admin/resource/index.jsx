@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 // for icon
 import { FaUpload } from "react-icons/fa";
+import ResourceList from './components/ResourceList';
 
 const ResourceUpload = () => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -117,8 +118,6 @@ const ResourceUpload = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-
-                // Set the file URL and local file path for display
                 setFileUrl(data.file_url);
                 setLocalFilePath(data.local_file_path);
                 window.location.reload();
@@ -136,75 +135,47 @@ const ResourceUpload = () => {
         <div>
 
             <button style={{
+                display: 'flex',
+                alignItems: 'center',
                 border: '1px solid black',
                 padding: '10px',
                 borderRadius: '10px'
-
             }} onClick={handleUpload}>
-                Upload <FaUpload style={{ marginRight: '50px' }} /></button>
-            <div style={{ marginTop: '50px' }}>
-                {resources.length > 0 ? (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '18px' }}>
-                        <thead>
-                            <tr style={{ borderBottom: '2px solid black', paddingBottom: '10px' }}>
-                                <th style={{ padding: '10px' }}>Name</th>
-                                <th style={{ padding: '10px' }}></th>
-                                <th style={{ padding: '10px' }}></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {resources.map((resource, index) => (
-                                <tr key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
-                                    <td>{resource.Name}</td>
-                                    <td>
-                                        <button onClick={() => handleDownload(resource.FilePath)}>
-                                            Download
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => openDeleteModal(resource)}>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <p>No resource has been uploaded...</p>
-                )}
-            </div>
+                Upload <FaUpload style={{ marginLeft: '10px', fontSize: '15px' }} /></button>
+            <ResourceList
+                resources={resources}
+                handleDownload={handleDownload}
+                openDeleteModal={openDeleteModal}
+            />
 
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="File Upload Successful" style={modalStyles}>
-                <h2 style={{
-                    fontSize: '20px',
-                    marginBottom: '20px'
-                }}><b>Upload Resource</b></h2>
-                <input type="file" onChange={handleFileUpload} />
+                <h2 style={{ fontSize: '30px', marginBottom: '20px', marginLeft: '30%' }}><b>Upload Resource</b></h2>
+                <input style={{ marginLeft: '20%' }} type="file" onChange={handleFileUpload} />
                 {file && (
-                    <div>
+                    <div style={{ marginTop: '2%', marginLeft: '15%' }}>
                         <p>File Name: {file.name} ({Math.round(file.size / 1024)} KB)</p>
                         <p>File Type: {file.type}</p>
                     </div>
                 )}
-                <div>
-                    <button style={{ marginRight: '40px', marginTop: '100px' }} disabled={isUploading} onClick={uploadToDatabase}>
+                <div style={{ marginTop: '10%', marginLeft: '30%', fontsize: '20px', }}>
+                    <button style={{ marginRight: '40px', backgroundColor: '#1f2937', color: 'white', padding: '10px 30px' }} disabled={isUploading} onClick={uploadToDatabase}>
                         {isUploading ? 'Uploading...' : 'Upload'}
                     </button>
-                    <button onClick={closeModal}>Close</button>
+                    <button style={{ backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={closeModal}>Close</button>
                 </div>
             </Modal>
             <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" style={modalStyles}>
-                <h2 style={{ fontSize: '20px', marginBottom: '20px' }}><b>Confirm Deletion</b></h2>
-                <p>Are you sure you want to delete this resource?</p>
-                <div>
-                    <button style={{ marginRight: '40px' }} onClick={handleDelete}>
+                <h2 style={{ fontSize: '30px', marginBottom: '20px', marginLeft: '30%' }}><b>Confirm Deletion</b></h2>
+                <p style={{ fontSize: '20px', marginLeft: '20%' }}>Are you sure you want to delete this resource?</p>
+                <p style={{ fontSize: '15px', marginLeft: '10%' }}>Once you delete the resource, it cannot be recovered. Are you sure you want to proceed? </p>
+                <div style={{ marginTop: '10%', marginLeft: '28%' }}>
+                    <button style={{ marginRight: '40px', backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={handleDelete}>
                         Confirm
                     </button>
-                    <button onClick={closeModal}>Cancel</button>
+                    <button style={{ backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={closeModal}>Cancel</button>
                 </div>
             </Modal>
-        </div>
+        </div >
     );
 };
 
