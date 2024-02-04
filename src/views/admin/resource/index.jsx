@@ -1,6 +1,7 @@
 // resource > index.jsx
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { getAuth } from 'firebase/auth';
 // for icon
 import { FaUpload } from "react-icons/fa";
 import ResourceList from './components/ResourceList';
@@ -102,6 +103,17 @@ const ResourceUpload = () => {
             }
         }
     };
+    //retrieval of auth token
+    const getAuthToken = async (auth) => {
+        try {
+            const user = await auth.currentUser;
+            const authToken = await user.getIdToken();
+            return authToken;
+        } catch (error) {
+            console.error('Error getting authentication token:', error.message);
+            throw error;
+        }
+    };
 
     // fetch for upload to database and storage
     const uploadToDatabase = async () => {
@@ -110,9 +122,14 @@ const ResourceUpload = () => {
 
         try {
             setIsUploading(true);
+            const auth = getAuth();
+            const authToken = await getAuthToken(auth);
             const response = await fetch('http://localhost:3011/resource', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                }
             });
 
             if (response.ok) {

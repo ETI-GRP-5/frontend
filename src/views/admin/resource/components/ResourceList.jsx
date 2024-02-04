@@ -9,6 +9,7 @@ const ResourceList = ({ resources, handleDownload, openDeleteModal }) => {
                     <thead>
                         <tr style={{ borderBottom: '2px solid black', paddingBottom: '10px' }}>
                             <th style={{ padding: '10px' }}>Name</th>
+                            <th style={{ padding: '10px' }}>Uploaded By</th>
                             <th style={{ padding: '10px' }}></th>
                             <th style={{ padding: '10px' }}></th>
                         </tr>
@@ -17,6 +18,7 @@ const ResourceList = ({ resources, handleDownload, openDeleteModal }) => {
                         {resources.map((resource, index) => (
                             <tr key={index} style={{ borderBottom: '1px solid #ddd', padding: '10px' }}>
                                 <td>{resource.Name}</td>
+                                <td>{resource.UploadedBy}</td>
                                 <td>
                                     <button onClick={() => handleDownload(resource.FilePath)}>
                                         Download
