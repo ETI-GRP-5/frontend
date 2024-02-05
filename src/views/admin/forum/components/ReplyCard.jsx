@@ -1,8 +1,31 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import Card from "components/card";
+import { Fragment, useRef, useState, useEffect } from 'react'
 
-export default function ReplyCard ({title, owner, price, time, extra}) {
+export default function ReplyCard ({content, creator, dateTime}) {
+
+
+    function calculateTimeDifference (dateTime) {
+        const currentTime = new Date();
+        const givenTime = new Date(dateTime);
+        const timeDifference = Math.abs(currentTime - givenTime);
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        
+        if (secondsDifference < 3600) {
+            // Less than an hour
+            return Math.floor(secondsDifference / 60) + " minutes ago";
+        } else if (secondsDifference < 86400) {
+            // Less than a day
+            return Math.floor(secondsDifference / 3600) + " hours ago";
+        } else if (secondsDifference < 31536000) {
+            // Less than a year
+            return Math.floor(secondsDifference / 86400) + " days ago";
+        } else {
+            // More than a year
+            return "More than a year ago";
+        }
+    };
 
     return (
         <div class="mb-3 ms-2 relative">
@@ -14,15 +37,15 @@ export default function ReplyCard ({title, owner, price, time, extra}) {
             <div class="ml-5 p-0.5 bg-white">
                 <div class="items-center justify-start mb-1 flex gap-4">
                     <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                        {title} {" "} 
+                        {creator}JDSJFKDS {" "} 
                         <span className=" ml-1.5 font-normal text-black whitespace-normal">
-                            Hi ya'll! I wanted to share a webinar zeroheight is having regarding how to best measure your design system! This is the second session of our new webinar series on #DesignSystems discussions where we'll be speaking about Measurement.
+                            {content}
                         </span>
                     </p>
                 </div>
                 <div className="flex flex-row gap-4">
                     <p class="text-xs font-medium text-gray-300 leading-none">
-                        {time} ago
+                        {calculateTimeDifference(dateTime)}
                     </p>
                 </div>
             </div>

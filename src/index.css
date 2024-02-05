@@ -66,3 +66,75 @@ input:checked.defaultCheckbox::before {
 	height: 1rem;
 	background: white;
 }
+
+
+.bg-sdg-1 {
+    background-color: #E5243B;
+}
+
+.bg-sdg-2 {
+    background-color: #DDA83A;
+}
+
+.bg-sdg-3 {
+	background-color: #4C9F38;
+}
+
+.bg-sdg-4 {
+	background-color: #C5192D;
+}
+
+.bg-sdg-5 {
+	background-color: #FF3A21;
+}
+
+.bg-sdg-6 {
+	background-color: #26BDE2;
+}
+
+.bg-sdg-7 {
+	background-color: #FCC30B;
+}
+
+.bg-sdg-8 {
+	background-color: #A21942;
+}
+
+.bg-sdg-9 {
+	background-color: #FD6925;
+}
+
+.bg-sdg-10 {
+	background-color: #DD1367;
+}
+
+.bg-sdg-11 {
+	background-color: #FD9D24;
+}
+
+.bg-sdg-12 {
+	background-color: #BF8B2E;
+}
+
+.bg-sdg-13 {
+	background-color: #3F7E44;
+}
+
+.bg-sdg-14 {
+	background-color: #0A97D9;
+}
+
+.bg-sdg-15 {
+	background-color: #56C02B;
+}
+
+.bg-sdg-16 {
+	background-color: #00689D;
+}
+
+.bg-sdg-17 {
+	background-color: #19486A;
+}
+
+
+

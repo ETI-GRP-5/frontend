@@ -1,9 +1,9 @@
 import Card from "components/card";
-import SDGs from "../variables/sdg.json"
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition, Menu } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import GetProjectDataById from "../../../../api/project/getProjectDataById";
+import SDGs from "../variables/sdg.json"
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -63,6 +63,13 @@ export default function ProjectDescriptionCard (props) {
         }));
     }
 
+    // write a function to get the sdg id from the SDG json file
+    function getSDG(sdg) {
+        // split the sdg string "SDG 1" to get the number
+        const sdgNumber = sdg.split(" ")[1]
+        return SDGs.filter((sdg) => sdg.id == parseInt(sdgNumber))[0].id
+    }
+
   
     if (!project) {
         return <div>Loading...</div>;
@@ -80,7 +87,7 @@ export default function ProjectDescriptionCard (props) {
                     <div className="w-full h-full bg-transparent p-8 flex flex-col justify-between items-center gap-4"> 
     
                         {/* SDG Display Component */}
-                        <div className={`relative w-full flex items-center justify-center ${backgroundColour} h-[10rem] rounded-md border border-black overflow-hidden`}>
+                        <div className={`relative w-full flex items-center justify-center bg-sdg-${getSDG(project.category)} h-[10rem] rounded-md border border-black overflow-hidden`}>
                             <img src={imageURL} alt="sdg icon" className="w-[150px] h-auto mt-5"/>
                             {/* <div className="rounded-md bg-blueSecondary  w-full h-[10rem]" /> */}
                         </div>

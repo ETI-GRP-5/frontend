@@ -1,9 +1,9 @@
 import ApiRoutes from "../../ApiRoutes";
 const apiRoutes = new ApiRoutes();
 
-async function GetAllForums() {
+async function GetForumDataById(id) {
     try {
-        const response = await fetch("http://" + apiRoutes.forumSVC + "/getForum");
+        const response = await fetch("http://" + apiRoutes.forumSVC + "/getReply/" + id);
         const responseJson = await response.json(); // Await the JSON parsing
         return responseJson;
     } catch (error) {
@@ -12,4 +12,4 @@ async function GetAllForums() {
     }
 }
 
-export default GetAllForums;
+export default GetForumDataById;
