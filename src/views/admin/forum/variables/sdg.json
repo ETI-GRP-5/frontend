@@ -2,86 +2,103 @@
     {
         "name": "No Poverty",
         "number": "SDG 1",
-        "colour": "bg-[#E5243B]"
+        "colour": "bg-[#E5243B]",
+        "id": "1"
     },
     {
         "name": "Zero Hunger",
         "number": "SDG 2",
-        "colour": "bg-[#DDA83A]"
+        "colour": "bg-[#DDA83A]",
+        "id": "2"
     },
     {
         "name": "Good Health and Well-being",
         "number": "SDG 3",
-        "colour": "bg-[#4C9F38]"
+        "colour": "bg-[#4C9F38]",
+        "id": "3"
     },
     {
         "name": "Quality Education",
         "number": "SDG 4",
-        "colour": "bg-[#C5192D]"
+        "colour": "bg-[#C5192D]",
+        "id": "4"
     },
     {
         "name": "Gender Equality",
         "number": "SDG 5",
-        "colour": "bg-[#FF3A21]"
+        "colour": "bg-[#FF3A21]",
+        "id": "5"
     },
     {
         "name": "Clean Water and Sanitation",
         "number": "SDG 6",
-        "colour": "bg-[#26BDE2]"
+        "colour": "bg-[#26BDE2]",
+        "id": "6"
     },
     {
         "name": "Affordable and Clean Energy",
         "number": "SDG 7",
-        "colour": "bg-[#FCC30B]"
+        "colour": "bg-[#FCC30B]",
+        "id": "7"
     },
     {
         "name": "Decent Work and Economic Growth",
         "number": "SDG 8",
-        "colour": "bg-[#A21942]"
+        "colour": "bg-[#A21942]",
+        "id": "8"
     },
     {
         "name": "Industry, Innovation and Infrastructure",
         "number": "SDG 9",
-        "colour": "bg-[#FD6925]"
+        "colour": "bg-[#FD6925]",
+        "id": "9"
     },
     {
         "name": "Reduced Inequality",
         "number": "SDG 10",
-        "colour": "bg-[#DD1367]"
+        "colour": "bg-[#DD1367]",
+        "id": "10"
     },
     {
         "name": "Sustainable Cities and Communities",
         "number": "SDG 11",
-        "colour": "bg-[#FD9D24]"
+        "colour": "bg-[#FD9D24]",
+        "id": "11"
     },
     {
         "name": "Responsible Consumption and Production",
         "number": "SDG 12",
-        "colour": "bg-[#BF8B2E]"
+        "colour": "bg-[#BF8B2E]",
+        "id": "12"
     },
     {
         "name": "Climate Action",
         "number": "SDG 13",
-        "colour": "bg-[#3F7E44]"
+        "colour": "bg-[#3F7E44]",
+        "id": "13"
     },
     {
         "name": "Life Below Water",
         "number": "SDG 14",
-        "colour": "bg-[#0A97D9]"
+        "colour": "bg-[#0A97D9]",
+        "id": "14"
     },
     {
         "name": "Life on Land",
         "number": "SDG 15",
-        "colour": "bg-[#56C02B]"
+        "colour": "bg-[#56C02B]",
+        "id": "15"
     },
     {
         "name": "Peace, Justice and Strong Institutions",
         "number": "SDG 16",
-        "colour": "bg-[#00689D]"
+        "colour": "bg-[#00689D]",
+        "id": "16"
     },
     {
         "name": "Partnerships for the Goals",
         "number": "SDG 17",
-        "colour": "bg-[#19486A]"
+        "colour": "bg-[#19486A]",
+        "id": "17"
     }
 ]

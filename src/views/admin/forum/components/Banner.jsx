@@ -15,7 +15,7 @@ const Category = () => {
         <h4 className="mb-[14px] max-w-full text-xl font-bold text-black md:text-3xl md:leading-[38px]">
           How would you describe the community we're creating here on Tookapic?\How would you describe the community we're creating here on Tookapic?
         </h4>
-      </div>
+      </div>a
 
 
 

@@ -23,15 +23,15 @@ class ApiRoutes {
 
     forumSVC = process.env.NEXT_PUBLIC_PORT
         ? `http://${process.env.NEXT_PUBLIC_DOMAIN}:5015`
-        : "http://localhost:3015";
+        : "localhost:3015";
 
     organisationSVC = process.env.NEXT_PUBLIC_PORT
         ? `http://${process.env.NEXT_PUBLIC_DOMAIN}:5016`
-        : "http://localhost:3016";
+        : "localhost:3016";
 
     notificationsSVC = process.env.NEXT_PUBLIC_PORT
         ? `http://${process.env.NEXT_PUBLIC_DOMAIN}:5017`
-        : "http://localhost:3017";
+        : "localhost:3017";
 }
 
 export default ApiRoutes;

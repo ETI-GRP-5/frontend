@@ -24,8 +24,13 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdForum,
+  MdNotificationsActive 
 } from "react-icons/md";
 import { FaSearch } from 'react-icons/fa';
+import { ImDropbox } from "react-icons/im";
+import { VscOrganization } from "react-icons/vsc";
+import { IoPersonSharp } from "react-icons/io5";
 
 
 const routes = [
@@ -76,14 +81,14 @@ const routes = [
     name: "Profile Settings",
     layout: "/admin",
     path: "profile",
-    icon: <MdPerson className="h-6 w-6" />,
+    icon: <IoPersonSharp className="h-6 w-6" />,
     component: <Profile />,
   },
   {
     name: "Community Organizations",
     layout: "/admin",
     path: "nft-marketplace",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    icon: <VscOrganization className="h-6 w-6" />,
     component: <NFTMarketplace />,
     secondary: true,
   },
@@ -91,7 +96,7 @@ const routes = [
     name: "Community Projects",
     layout: "/admin",
     path: "projects",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    icon: <ImDropbox className="h-6 w-6" />,
     component: <CommunityProjects />,
   },
 
@@ -109,7 +114,7 @@ const routes = [
     name: "Community Forum",
     layout: "/admin",
     path: "forum",
-    icon: <MdHome className="h-6 w-6" />,
+    icon: <MdForum className="h-6 w-6" />,
     component: <CommunityForum />,
   },
 
@@ -127,7 +132,7 @@ const routes = [
     name: "Notifications",
     layout: "/admin",
     path: "nft-marketplace",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
+    icon: <MdNotificationsActive className="h-6 w-6" />,
     component: <NFTMarketplace />,
     secondary: true,
   },
