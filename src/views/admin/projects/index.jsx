@@ -72,6 +72,9 @@ const Marketplace = () => {
                     //console.log("Correct Response", response.data);
                     setCurrentProjects(response.data);
                     setSdgCategories(SDGs);
+                } else if (response.message == "No projects found.") {
+                    console.log("No projects found.");
+                    setCurrentProjects([]);
                 }
                 console.log("response", response);
             } catch (error) {
@@ -203,19 +206,29 @@ const Marketplace = () => {
                             <TiPlus className="w-10 h-auto text-blueSecondary"/>
                             <p className="font-bold text-lg">Add New Project</p>
                         </button>
-                        {currentProjects.map((project, key) => (
-                            <div key={key} className={`w-full h-full ${sdgFilter == "" ? "block" : project.projectData.category != sdgFilter ? "hidden" : "block"}`}>
-                                <ProjectCard
-                                    name={project.projectData.name}
-                                    description={project.projectData.description}
-                                    creator={project.projectData.creator}
-                                    members={100}
-                                    sdg={project.projectData.category}
-                                    id={project.id}
-                                />
-                            </div>
-                            
-                        ))}
+
+                        {currentProjects.length == 0 ? (
+                            <p>No projects found.</p>
+                        ) : (
+                            <>
+                                {currentProjects.map((project, key) => (
+                                    <div key={key} className={`w-full h-full ${sdgFilter == "" ? "block" : project.projectData.category != sdgFilter ? "hidden" : "block"}`}>
+                                        <ProjectCard
+                                            name={project.projectData.name}
+                                            description={project.projectData.description}
+                                            creator={project.projectData.creator}
+                                            members={100}
+                                            sdg={project.projectData.category}
+                                            id={project.id}
+                                        />
+                                    </div>
+                                    
+                                ))}
+                            </>
+                        )}
+
+
+                        
                     </div>
     
                     {/* Recenlty Added setion */}

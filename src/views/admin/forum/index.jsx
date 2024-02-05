@@ -49,6 +49,9 @@ export default function MainForumPage () {
                     console.log("Correct Response", response.data);
                     setCurrentForumData(response.data);
                     // setSdgCategories(SDGs);
+                } else if (response.message == "No forums found.") {
+                    console.log("No forums found.");
+                    setCurrentForumData([]);
                 }
                 console.log("response", response);
             } catch (error) {
@@ -130,7 +133,30 @@ export default function MainForumPage () {
     
                         {/* NFTs trending card */}
                         <div className="z-20 flex flex-col gap-y-9">
-                            {currentForumData.map((forum, key) => (
+                            {currentForumData.length == 0 ? 
+                                (
+                                    <p>No comments found for this forum.</p>
+                                ) 
+                                : 
+                                (
+                                    <>
+                                        {currentForumData.map((forum, key) => (
+                                            console.log("forum123", forum.forumData),
+                                                <ForumCard
+                                                    title={forum.forumData.title}
+                                                    content={forum.forumData.content}
+                                                    creator={forum.forumData.creator}
+                                                    comments={forum.forumData.comments}
+                                                    category={forum.forumData.category}
+                                                    id={forum.id}
+                                                />
+                                            ))}   
+                                    </>
+                                )
+                            }
+
+
+                            {/* {currentForumData.map((forum, key) => (
                                 console.log("forum123", forum.forumData),
                                 <ForumCard
                                     title={forum.forumData.title}
@@ -140,7 +166,7 @@ export default function MainForumPage () {
                                     category={forum.forumData.category}
                                     id={forum.id}
                                 />
-                            ))}
+                            ))} */}
                             {/* <ForumCard
                                 title="ETH AI Brain"
                                 content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
