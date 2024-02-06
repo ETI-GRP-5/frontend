@@ -15,12 +15,13 @@ const ResourceUpload = () => {
     const [localFilePath, setLocalFilePath] = useState('');
     const [selectedResource, setSelectedResource] = useState(null);
     const [resources, setResources] = useState([]);
+    const [projectId, setProjectId] = useState(localStorage.getItem("projectId"));
 
     useEffect(() => {
         console.log('Fetching resources...');
         const fetchResources = async () => {
             try {
-                const response = await fetch('http://localhost:3011/showresource');
+                const response = await fetch(`http://localhost:3011/showresource/${projectId}`);
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Fetched resources:', data);
@@ -32,7 +33,6 @@ const ResourceUpload = () => {
                 console.error('Error fetching resources:', error.message);
             }
         };
-
         fetchResources();
     }, []);
 
@@ -124,7 +124,7 @@ const ResourceUpload = () => {
             setIsUploading(true);
             const auth = getAuth();
             const authToken = await getAuthToken(auth);
-            const response = await fetch('http://localhost:3011/resource', {
+            const response = await fetch(`http://localhost:3011/resource/${projectId}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
