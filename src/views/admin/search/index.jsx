@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SearchView = () => {
   const [query, setQuery] = useState('');
@@ -6,26 +7,68 @@ const SearchView = () => {
   const [selectedSdg, setSelectedSdg] = useState(null);
 
   // Function to handle search
-  const handleSearch = async () => {
-    try {
-      // Make an HTTP request to your Go server's search endpoint
-      const response = await fetch(`http://localhost:8080/api/search?query=${query}`);
-      
-      // Check if the request was successful
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+const handleSearch = async () => {
+  try {
+    // Clear selectedSdg and search results when a new search is performed
+    setSelectedSdg(null);
+    setSearchResults([]);
 
-      // Parse the JSON response
-      const result = await response.json();
-
-      // Update the searchResults state with the obtained data
-      setSearchResults(result.results);
-    } catch (error) {
-      console.error('Error during search:', error);
-      // Handle the error, e.g., display an error message to the user
+    if (!query) {
+      // If query is empty, show "No records found" only after the search button is clicked
+      return;
     }
-  };
+    const lowerCaseQuery = query.toLowerCase();
+
+    // Check if the query is "Project 1", "Project 2", or "Project 3"
+    const projectQueries = ['project 1', 'project 2', 'project 3'];
+    if (projectQueries.includes(lowerCaseQuery)) {
+      // Use hardcoded data for the specified projects
+      const projectData = {
+        'project 1': {
+          project_id: "1",
+          project_title: "Project 1",
+          project_detail: "Details of Project 1",
+        },
+        'project 2': {
+          project_id: "2",
+          project_title: "Project 2",
+          project_detail: "Details of Project 2",
+        },
+        'project 3': {
+          project_id: "3",
+          project_title: "Project 3",
+          project_detail: "Details of Project 3",
+        },
+      };
+
+      setSearchResults([projectData[lowerCaseQuery]]);
+    } else {
+     // Actual API call
+const response = await fetch(`http://localhost:3018/api/search?query=${lowerCaseQuery}`);
+
+if (!response.ok) {
+  throw new Error(`HTTP error! Status: ${response.status}`);
+}
+
+const result = await response.json();
+console.log(result); // Log the response
+
+// Check if there are results and display a success message
+if (result.results && result.results.length > 0) {
+  setSearchResults(result.results);
+  alert(`You have found ${result.results[0].project_title}`);
+} else {
+  // If no results, display a message
+  setSearchResults([]);
+  alert('No records found');
+}
+    }
+    
+  } catch (error) {
+    console.error('Error during search:', error);
+    // Handle the error, e.g., display an error message to the user
+  }
+};
 
   // Data for all 17 SDGs with names and descriptions
   const sdgsData = [
@@ -116,9 +159,14 @@ const SearchView = () => {
     },
   ];
 
-  // Function to handle "See more" click
+  // Function to handle "See more" click for SDGs
   const handleSeeMoreClick = (sdg) => {
     setSelectedSdg(sdg);
+  };
+
+  // Function to truncate text
+  const truncateText = (text, limit) => {
+    return text.length > limit ? `${text.substring(0, limit)}...` : text;
   };
 
   // Function to handle popup close
@@ -128,10 +176,11 @@ const SearchView = () => {
 
   return (
     <div className="container mx-auto mt-8 text-center">
-      <h2 className="text-2xl font-bold mb-4">Search for SDGs or Projects</h2>
-      <p className="text-gray-600 mb-4">Enter the SDG or project name in the search bar below:</p>
+      <h2 className="text-2xl font-bold mb-4">Search for projects</h2>
+      <p className="text-gray-600 mb-4">Enter the project name in the search bar below:</p>
 
       <div className="mb-6 flex items-center justify-center">
+        {/* Search bar */}
         <input
           className="p-3 w-96 border rounded-md focus:outline-none focus:border-blue-500"
           type="search"
@@ -146,16 +195,41 @@ const SearchView = () => {
           Search
         </button>
       </div>
+      {/* Display search results below the search input */}
+      <div className="text-left mt-4">
+        <h2 className="text-2xl font-bold mb-4">Search Results for "{query}"</h2>
+        {searchResults.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {searchResults.map((result, index) => (
+            <div key={index} className="m-4 p-4 bg-gray-100 rounded-md text-center">
+              <h3 className="text-lg font-semibold">{result.project_title}</h3>
+              <p>{result.project_detail}</p>
+              <Link to={`/project/${result.project_id}`}>
+                <button className="mt-2 p-2 bg-blue-500 text-white rounded-md">
+                  View
+                </button>
+              </Link>
+            </div>
+          ))}
+          </div>
+          
+        ) : (
+          query && !searchResults.length && <p style={{ color: 'red' }}>No records found</p>
+        )}
+      </div>
 
+      <div className="container mx-auto mt-8 text-center">
+      <h2 className="text-2xl font-bold mb-4" style={{ color: 'green' }}>List of SDG</h2>
+      <p className="text-gray-600 mb-4">Discover projects in various SDGs and find one that you could contribute in!</p>
+    </div>
+
+      {/* Display cards for all 17 SDGs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Display cards for all 17 SDGs */}
         {sdgsData.map((sdg) => (
           <div key={sdg.id} className="m-4 p-4 bg-gray-100 rounded-md text-center">
             <h3 className="text-lg font-semibold">{`SDG ${sdg.id}: ${sdg.name}`}</h3>
             <p>
-              {sdg.description.length > 100
-                ? `${sdg.description.substring(0, 100)}... `
-                : sdg.description}
+              {truncateText(sdg.description, 100)}
               {sdg.description.length > 100 && (
                 <span
                   className="text-blue-500 cursor-pointer"
@@ -169,25 +243,6 @@ const SearchView = () => {
           </div>
         ))}
       </div>
-
-      <h2 className="text-2xl font-bold mt-8 mb-4">Search Results for "{query}"</h2>
-
-      {searchResults.length > 0 ? (
-        <div>
-          {searchResults.map((result, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="text-lg font-semibold">{result.sdgName}</h3>
-              <ul>
-                {result.projects.map((project, projectIndex) => (
-                  <li key={projectIndex}>{project}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No results found</p>
-      )}
 
       {/* Popup for full description */}
       {selectedSdg && (
