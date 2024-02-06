@@ -3,15 +3,26 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition, Menu } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import GetProjectDataById from "../../../../api/project/getProjectDataById";
-import SDGs from "../variables/sdg.json"
+import SDGs from "../variables/sdg.json";
+import { getAuth } from "firebase/auth";
+import UpdateProject from "../../../../api/project/updateCurrentProject";
+import JoinNewProject from "../../../../api/project/joinNewProject";
+import LeaveCurrentProject from "../../../../api/project/leaveCurrentProject";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function ProjectDescriptionCard (props) {
+
+    const auth = getAuth();
+    console.log(auth.currentUser)
+
+
     const sdgCategories = SDGs;
     const [project, setProject] = useState(null);
+    const [newStatus, setNewStatus] = useState("");
+    const [memberList, setMemberList] = useState(null);
 
     useEffect(() => {
 
@@ -23,6 +34,7 @@ export default function ProjectDescriptionCard (props) {
                 const response = await GetProjectDataById(projectId);
                 if (response.status == "Success") {
                     setProject(response.data.projectData);
+                    console.log("project", response.data.projectData);
                 }
                 console.log("response", response);
                 //const json = await response.json();
@@ -70,8 +82,74 @@ export default function ProjectDescriptionCard (props) {
         return SDGs.filter((sdg) => sdg.id == parseInt(sdgNumber))[0].id
     }
 
+
+    function handleDropdownChange(status) {
+        setNewStatus(status);
+        const projectId = localStorage.getItem("projectId");
+        handleUpdateProject(projectId, status);
+    }
+
+
+
+    async function handleUpdateProject(id, status) {
+        console.log("new status:", status);
+        if (status !== project.status) {
+        
+            try {
+                const response = await UpdateProject(id, status);
+                console.log("response", response);
+                window.location.reload();
+            } catch (error) {
+                console.log("error", error);
+            }
+
+        } else {
+            console.log("No changes made");
+        }
+    }
+
+
+    async function handleJoinProject() {
+        const projectId = localStorage.getItem("projectId");
+        const userId = auth.currentUser.uid;
+        try {
+            const response = await JoinNewProject(projectId, userId);
+            console.log("response", response);
+            if (response.status == "Success") {
+                window.location.reload();
+            }
+            // window.location.reload();
+        } catch (error) {
+            console.log("error", error);
+        }
+
+        console.log("No changes made");
+    }
+
+    async function handleLeaveProject() {
+        const projectId = localStorage.getItem("projectId");
+        const userId = auth.currentUser.uid;
+        try {
+            const response = await LeaveCurrentProject(projectId, userId);
+            console.log("response", response);
+            if (response.status == "Success") {
+                window.location.reload();
+            }
+            // window.location.reload();
+        } catch (error) {
+            console.log("error", error);
+        }
+
+        console.log("No changes made");
+    }
+
+    // async findUserName(userId) {
+    // }
+
+
+
   
-    if (!project) {
+    if (!project || !auth.currentUser) {
         return <div>Loading...</div>;
     }
     else {
@@ -97,7 +175,7 @@ export default function ProjectDescriptionCard (props) {
                                 By {" "}
                             </p>
                             <p className="text-lg font-bold text-black dark:text-white">
-                                {project.creator}{" "}
+                                {auth.currentUser.email == null || project.creator == auth.currentUser.email ? "You" : project.creator}{" "}
                             </p>
                         </div>
                         {/* Basic Project Information Component */}
@@ -129,12 +207,34 @@ export default function ProjectDescriptionCard (props) {
                         </div>
                         {/* Join/Leave Project Button Component */}
                         <div className="flex items-center justify-between flex-col w-full">
-                            <button
-                                href=""
-                                className="linear w-full rounded-md bg-blueSecondary px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-brandLinear active:bg-brand-700 border border-black"
-                            >
-                                Join Project
-                            </button>
+                            {auth.currentUser.email == null || project.creator == auth.currentUser.email ? (
+                                <></>
+                            ) : (
+                                <>
+                                    {project.members.includes(auth.currentUser.uid) ? (
+                                        <button
+                                            className="linear w-full rounded-md bg-red-500 px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-red-600 active:bg-red-700 border border-black"
+                                            onClick={handleLeaveProject}
+                                        >
+                                            Leave Project
+                                        </button>
+                                    ): (
+                                        <button
+                                            className="linear w-full rounded-md bg-blueSecondary px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-brandLinear active:bg-brand-700 border border-black"
+                                            onClick={handleJoinProject}
+                                        >
+                                            Join Project
+                                        </button>
+                                    )}
+                                </>
+                                // <button
+                                //     className="linear w-full rounded-md bg-blueSecondary px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-brandLinear active:bg-brand-700 border border-black"
+                                //     onClick={handleJoinProject}
+                                // >
+                                //     Join Project
+                                // </button>
+                            )}
+                            
                         </div>
                     </div>
     
@@ -226,7 +326,7 @@ export default function ProjectDescriptionCard (props) {
                                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                             'block px-4 py-2 text-sm w-full text-left'
                                                         )}
-                                                        onClick={() => handleUserInput("status", "Completed")}
+                                                        onClick={() => handleDropdownChange("In Progress")}
                                                     >
                                                         In Progress
                                                     </button>
@@ -239,7 +339,7 @@ export default function ProjectDescriptionCard (props) {
                                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                             'block px-4 py-2 text-sm w-full text-left'
                                                         )}
-                                                        onClick={() => handleUserInput("status", "Completed")}
+                                                        onClick={() => handleDropdownChange("Completed")}
                                                     >
                                                         Completed
                                                     </button>
@@ -252,7 +352,7 @@ export default function ProjectDescriptionCard (props) {
                                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                             'block px-4 py-2 text-sm w-full text-left'
                                                         )}
-                                                        onClick={() => handleUserInput("status", "Completed")}
+                                                        onClick={() => handleDropdownChange("Cancelled")}
                                                     >
                                                         Cancelled
                                                     </button>
@@ -265,7 +365,7 @@ export default function ProjectDescriptionCard (props) {
                                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                             'block px-4 py-2 text-sm w-full text-left'
                                                         )}
-                                                        onClick={() => handleUserInput("status", "Completed")}
+                                                        onClick={() => handleDropdownChange("Delayed")}
                                                     >
                                                         Delayed
                                                     </button>
@@ -286,7 +386,17 @@ export default function ProjectDescriptionCard (props) {
                                 MEMBERS
                             </p>
                             <p className="text-md font-bold text-black dark:text-white">
-                                PROJECT DESCRIPTION HERE PROJECT DESCRIPTION HERE PROJECT DESCRIPTION HER
+                                {project?.members !== null && project?.members?.length > 0 ? (
+                                    <>
+                                        {project.members.map((member, index) => (
+                                            <p key={index} className="text-md font-bold text-black dark:text-white">
+                                                {member}{", "}
+                                            </p>
+                                        ))}{" "}
+                                    </> 
+                                ) : ( 
+                                    <p>No members yet</p>
+                                )}{" "}
                             </p>
                         </div>
     

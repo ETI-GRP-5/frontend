@@ -2,9 +2,15 @@
 import { useState } from "react";
 import Card from "components/card";
 import { Link } from 'react-router-dom';
-import SDGs from "../variables/sdg.json"
+import SDGs from "../variables/sdg.json";
+import { getAuth } from "firebase/auth";
 
 const ProjectCard = ({ name, description, creator, members, sdg, extra, id }) => {
+
+
+  const auth = getAuth();
+
+  //console.log(auth.currentUser)
   
   // create a function to store the project id in local storage
   function storeProjectId() {
@@ -35,17 +41,17 @@ const ProjectCard = ({ name, description, creator, members, sdg, extra, id }) =>
               <div className={`rounded-full py-1 px-4 bg-sdg-${getSDG(sdg)} text-white text-sm font-semibold`}>
                 {sdg}
               </div>
-              <p className="w-full text-left text-lg font-bold text-navy-700 dark:text-white">
+              <p className="w-full text-left text-lg font-bold text-navy-700 dark:text-white line-clamp-1">
                 {name}{" "}
               </p>
-              <p className="w-full text-sm font-medium text-gray-600 text-left line-clamp-4 text-balance">
+              <p className="w-full text-sm font-medium text-gray-600 text-left line-clamp-3 text-balance">
                 {description}{" "}
               </p>
             </div>
 
             <div className="w-full flex items-start lg:items-center justify-start lg:justify-between flex-col lg:flex-row">
               <p className="text-sm font-bold text-brand-500 dark:text-white">
-                By: {creator}
+                By: {creator == auth.currentUser.email ? "You" : creator}{" "}
               </p>
               <p className="text-sm font-bold text-brand-500 dark:text-white">
                 Members: {members} <span>ppl</span>

@@ -1,9 +1,13 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import Card from "components/card";
-import { Fragment, useRef, useState, useEffect } from 'react'
+import { Fragment, useRef, useState, useEffect } from 'react';
+import { getAuth } from "firebase/auth";
 
 export default function ReplyCard ({content, creator, dateTime}) {
+
+
+    const auth = getAuth();
 
 
     function calculateTimeDifference (dateTime) {
@@ -37,7 +41,7 @@ export default function ReplyCard ({content, creator, dateTime}) {
             <div class="ml-5 p-0.5 bg-white">
                 <div class="items-center justify-start mb-1 flex gap-4">
                     <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                        {creator}JDSJFKDS {" "} 
+                        {creator == auth.currentUser.email ? "You" : creator}JDSJFKDS {" "} 
                         <span className=" ml-1.5 font-normal text-black whitespace-normal">
                             {content}
                         </span>

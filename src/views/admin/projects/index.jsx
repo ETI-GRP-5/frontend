@@ -21,6 +21,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 import GetAllProjects from "../../../api/project/getAllProjects";
 import PostNewProject from "../../../api/project/postNewProject";
+import { getAuth } from "firebase/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -32,6 +33,10 @@ function classNames(...classes) {
 
 
 const Marketplace = () => {
+
+    const auth = getAuth();
+
+
     const [newProject, setNewProject] = useState({
         name: "",
         description: "",
@@ -39,7 +44,7 @@ const Marketplace = () => {
         endDate: "",
         status: "Created",
         category: "",
-        creator: 123,
+        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User",
     });
     const [currentProjects, setCurrentProjects] = useState(null);
     const [sdgFilter, setSdgFilter] = useState(""); // State to store the SDG filter

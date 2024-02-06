@@ -133,7 +133,9 @@ const ProjectDetails = () => {
                             handleDownload={handleDownload}
                             openDeleteModal={openDeleteModal}
                         /> */}
-                        <ResourceService />
+
+
+                        {/* <ResourceService /> */}
                     </div>
 
 

@@ -6,8 +6,13 @@ import { Link } from 'react-router-dom';
 import SDGs from "../variables/sdg.json";
 import GetCommentDataById from "../../../../api/forum/getCommentsByProjectId";
 import GetRepliesById from "../../../../api/forum/getRepliesByProjectId";
+import { getAuth } from "firebase/auth";
 
 const ForumCard = ({ title, content, creator, comments, category, id, extra }) => {
+
+    const auth = getAuth();
+
+
     //const [heart, setHeart] = useState(true);
     const [commentNo, setCommentNo] = useState(0);
     const [replyNo, setReplyNo] = useState(0);
@@ -94,7 +99,7 @@ const ForumCard = ({ title, content, creator, comments, category, id, extra }) =
                                         {title}{" "}
                                     </p>
                                     <p className="w-full text-sm font-medium text-gray-600">
-                                        By {creator}{" "} Insert name here
+                                        By {creator == auth.currentUser.email ? "You" : creator}{" "}
                                     </p>
                                 </div>
                                 
