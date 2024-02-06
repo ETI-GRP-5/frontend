@@ -211,7 +211,7 @@ export default function ProjectDescriptionCard (props) {
                                 <></>
                             ) : (
                                 <>
-                                    {project.members.includes(auth.currentUser.uid) ? (
+                                    {project?.members?.includes(auth.currentUser.uid) ? (
                                         <button
                                             className="linear w-full rounded-md bg-red-500 px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-red-600 active:bg-red-700 border border-black"
                                             onClick={handleLeaveProject}

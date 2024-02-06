@@ -133,7 +133,7 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
                     <div class="ml-5 p-0.5 bg-white">
                         <div class="items-center justify-start mb-1 flex gap-4">
                             <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                                {creator == auth.currentUser.email ? "You" : creator}HELLO {" "} 
+                                {creator == auth.currentUser.email ? "You" : creator} {" "} 
                                 <span className=" ml-1.5 font-normal text-black whitespace-normal">
                                     {content}
                                 </span>
