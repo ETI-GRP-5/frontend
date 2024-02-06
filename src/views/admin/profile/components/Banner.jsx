@@ -19,7 +19,7 @@ const Banner = () => {
       return;
     }
     setSelectedImage(file);
-    const res = await UploadProfilePic(file);
+    const res = await UploadProfilePic(file, user.uid);
     if(res.ok){
       const img = await res.json();
       if( user && auth && auth.currentUser){
