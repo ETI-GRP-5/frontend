@@ -1,5 +1,5 @@
 import React from "react";
-import avatar from "assets/img/avatars/avatar11.png";
+import avatar from "assets/img/avatars/avatar12.png";
 import banner from "assets/img/profile/banner.png";
 import Card from "components/card";
 import { MdModeEditOutline } from "react-icons/md";
@@ -19,7 +19,7 @@ const Banner = () => {
       return;
     }
     setSelectedImage(file);
-    const res = await UploadProfilePic(file);
+    const res = await UploadProfilePic(file, user.uid);
     if(res.ok){
       const img = await res.json();
       if( user && auth && auth.currentUser){
