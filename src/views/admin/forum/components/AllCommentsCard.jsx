@@ -14,6 +14,7 @@ import CommentCard from "../components/CommentCard"
 import Card from "components/card";
 import GetCommentDataById from "../../../../api/forum/getCommentsByProjectId";
 
+
 const HistoryCard = ({id}) => {
 
     const [comment, setComment] = useState(null);

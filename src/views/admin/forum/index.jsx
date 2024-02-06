@@ -20,6 +20,7 @@ import { Dialog, Transition, Menu } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import GetAllForums from "../../../api/forum/getAllForums";
 import PostNewForum from "../../../api/forum/postNewForum";
+import { getAuth } from "firebase/auth";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -29,11 +30,16 @@ const sdgCategories = SDGs;
 
 export default function MainForumPage () {
 
+    const auth = getAuth();
+
+    console.log("auth.currentUser", auth.currentUser)
+
     const [newForum, setNewForum] = useState({
         title: "",
         content: "",
         dateTime: "",
         category: "",
+        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User"
     });
 
     const [currentForumData, setCurrentForumData] = useState(null); 
@@ -49,6 +55,9 @@ export default function MainForumPage () {
                     console.log("Correct Response", response.data);
                     setCurrentForumData(response.data);
                     // setSdgCategories(SDGs);
+                } else if (response.message == "No forums found.") {
+                    console.log("No forums found.");
+                    setCurrentForumData([]);
                 }
                 console.log("response", response);
             } catch (error) {
@@ -126,81 +135,33 @@ export default function MainForumPage () {
                             <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
                                 All Forums
                             </h4>
+                            {/* {auth === null ? "User" : (auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "User") : "User")} */}
                         </div>
     
                         {/* NFTs trending card */}
                         <div className="z-20 flex flex-col gap-y-9">
-                            {currentForumData.map((forum, key) => (
-                                console.log("forum123", forum.forumData),
-                                <ForumCard
-                                    title={forum.forumData.title}
-                                    content={forum.forumData.content}
-                                    creator={forum.forumData.creator}
-                                    comments={forum.forumData.comments}
-                                    category={forum.forumData.category}
-                                    id={forum.id}
-                                />
-                            ))}
-                            {/* <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            />
-                            <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            />
-                            <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            />
-                            <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            />
-                            <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            />
-                            <ForumCard
-                                title="ETH AI Brain"
-                                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc. Sed euismod, diam id bibendum ultricies, nunc elit ultricies nunc, vitae lacinia nisl nisl eget nunc."
-                                creator="Nick Wilson"
-                                likes={200}
-                                dislikes={50}
-                                comments={7}
-                                sdg="2"
-                                id={2}
-                            /> */}
+                            {currentForumData.length == 0 ? 
+                                (
+                                    <p>No comments found for this forum.</p>
+                                ) 
+                                : 
+                                (
+                                    <>
+                                        {currentForumData.map((forum, key) => (
+                                            console.log("forum123", forum.forumData),
+                                                <ForumCard
+                                                    title={forum.forumData.title}
+                                                    content={forum.forumData.content}
+                                                    creator={forum.forumData.creator}
+                                                    comments={forum.forumData.comments}
+                                                    category={forum.forumData.category}
+                                                    id={forum.id}
+                                                />
+                                            ))}   
+                                    </>
+                                )
+                            }
+
                         </div>
                     </div>
     

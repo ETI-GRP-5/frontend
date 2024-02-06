@@ -4,6 +4,7 @@ import ProjectDescriptionCard from "../components/ProjectDescriptionCard";
 import Modal from 'react-modal';
 // for icon
 import { FaUpload } from "react-icons/fa";
+import ResourceService from '../../resource/index';
 
 
 const ProjectDetails = () => {
@@ -97,11 +98,15 @@ const ProjectDetails = () => {
                     </div>
                         
                     <div className='w-full h-full relative'>
-                        <button className='w-full h-fit p-12 bg-white hover:bg-gray-200 border border-black rounded-md flex flex-col gap-5 justify-center items-center' onClick={handleUpload}>
+                        {/* <button className='w-full h-fit p-12 bg-white hover:bg-gray-200 border border-black rounded-md flex flex-col gap-5 justify-center items-center' onClick={handleUpload}>
                             <FaUpload className='w-10 h-auto' />
                             <span className='text-xl font-bold text-black'>Upload</span>
                         </button>
-                        {/* modal content */}
+                        <ResourceList
+                            resources={resources}
+                            handleDownload={handleDownload}
+                            openDeleteModal={openDeleteModal}
+                        />
                         <Modal
                             isOpen={isModalOpen}
                             onRequestClose={closeModal}
@@ -123,6 +128,14 @@ const ProjectDetails = () => {
                                 <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Close</button>
                             </div>
                         </Modal>
+                        <ResourceList
+                            resources={resources}
+                            handleDownload={handleDownload}
+                            openDeleteModal={openDeleteModal}
+                        /> */}
+
+
+                        {/* <ResourceService /> */}
                     </div>
 
 

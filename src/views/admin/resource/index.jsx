@@ -151,34 +151,32 @@ const ResourceUpload = () => {
     return (
         <div>
 
-            <button style={{
-                display: 'flex',
-                alignItems: 'center',
-                border: '1px solid black',
-                padding: '10px',
-                borderRadius: '10px'
-            }} onClick={handleUpload}>
-                Upload <FaUpload style={{ marginLeft: '10px', fontSize: '15px' }} /></button>
+            <button className='w-full h-fit p-12 bg-white hover:bg-gray-200 border border-black rounded-md flex flex-col gap-5 justify-center items-center' onClick={handleUpload}>
+                <FaUpload className='w-10 h-auto' />
+                <span className='text-xl font-bold text-black'>Upload</span>
+            </button>
             <ResourceList
                 resources={resources}
                 handleDownload={handleDownload}
                 openDeleteModal={openDeleteModal}
             />
 
-            <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="File Upload Successful" style={modalStyles}>
-                <h2 style={{ fontSize: '30px', marginBottom: '20px', marginLeft: '30%' }}><b>Upload Resource</b></h2>
-                <input style={{ marginLeft: '20%' }} type="file" onChange={handleFileUpload} />
+            <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="File Upload Successful" className="absolute w-1/2 h-1/2 bg-white border border-black rounded-md  z-[99] top-1/2 left-[60%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                <h2 className='text-2xl mb-20 font-bold'>
+                    <b>Upload Resource</b>
+                </h2>
+                <input className='flex items-center justify-center border border-black rounded-md' type="file" onChange={handleFileUpload} />
                 {file && (
-                    <div style={{ marginTop: '2%', marginLeft: '15%' }}>
+                    <div className="mt-6 ml-4">
                         <p>File Name: {file.name} ({Math.round(file.size / 1024)} KB)</p>
                         <p>File Type: {file.type}</p>
                     </div>
                 )}
-                <div style={{ marginTop: '10%', marginLeft: '30%', fontsize: '20px', }}>
-                    <button style={{ marginRight: '40px', backgroundColor: '#1f2937', color: 'white', padding: '10px 30px' }} disabled={isUploading} onClick={uploadToDatabase}>
+                <div className='w-full flex flex-row gap-20 items-center justify-center mt-16'>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' disabled={isUploading} onClick={uploadToDatabase}>
                         {isUploading ? 'Uploading...' : 'Upload'}
                     </button>
-                    <button style={{ backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={closeModal}>Close</button>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Close</button>
                 </div>
             </Modal>
             <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" style={modalStyles}>

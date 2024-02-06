@@ -21,6 +21,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 import GetAllProjects from "../../../api/project/getAllProjects";
 import PostNewProject from "../../../api/project/postNewProject";
+import { getAuth } from "firebase/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -32,6 +33,10 @@ function classNames(...classes) {
 
 
 const Marketplace = () => {
+
+    const auth = getAuth();
+
+
     const [newProject, setNewProject] = useState({
         name: "",
         description: "",
@@ -39,7 +44,7 @@ const Marketplace = () => {
         endDate: "",
         status: "Created",
         category: "",
-        creator: 123,
+        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User",
     });
     const [currentProjects, setCurrentProjects] = useState(null);
     const [sdgFilter, setSdgFilter] = useState(""); // State to store the SDG filter
@@ -72,6 +77,9 @@ const Marketplace = () => {
                     //console.log("Correct Response", response.data);
                     setCurrentProjects(response.data);
                     setSdgCategories(SDGs);
+                } else if (response.message == "No projects found.") {
+                    console.log("No projects found.");
+                    setCurrentProjects([]);
                 }
                 console.log("response", response);
             } catch (error) {
@@ -203,19 +211,29 @@ const Marketplace = () => {
                             <TiPlus className="w-10 h-auto text-blueSecondary"/>
                             <p className="font-bold text-lg">Add New Project</p>
                         </button>
-                        {currentProjects.map((project, key) => (
-                            <div key={key} className={`w-full h-full ${sdgFilter == "" ? "block" : project.projectData.category != sdgFilter ? "hidden" : "block"}`}>
-                                <ProjectCard
-                                    name={project.projectData.name}
-                                    description={project.projectData.description}
-                                    creator={project.projectData.creator}
-                                    members={100}
-                                    sdg={project.projectData.category}
-                                    id={project.id}
-                                />
-                            </div>
-                            
-                        ))}
+
+                        {currentProjects.length == 0 ? (
+                            <p>No projects found.</p>
+                        ) : (
+                            <>
+                                {currentProjects.map((project, key) => (
+                                    <div key={key} className={`w-full h-full ${sdgFilter == "" ? "block" : project.projectData.category != sdgFilter ? "hidden" : "block"}`}>
+                                        <ProjectCard
+                                            name={project.projectData.name}
+                                            description={project.projectData.description}
+                                            creator={project.projectData.creator}
+                                            members={100}
+                                            sdg={project.projectData.category}
+                                            id={project.id}
+                                        />
+                                    </div>
+                                    
+                                ))}
+                            </>
+                        )}
+
+
+                        
                     </div>
     
                     {/* Recenlty Added setion */}

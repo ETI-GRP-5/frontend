@@ -7,16 +7,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FaReply } from "react-icons/fa";
 import PostNewReply from "../../../../api/forum/postNewReply";
-import GetRepliesById from "../../../../api/forum/getRepliesByProjectId"
+import GetRepliesById from "../../../../api/forum/getRepliesByProjectId";
+import { getAuth } from "firebase/auth";
 
 export default function CommentCard ({commentId, content, creator, dateTime, forumId}) {
+
+    const auth = getAuth();
 
     const [reply, setReply] = useState(null);
     const [newReply, setNewReply] = useState({
         content: "",
         commentId: commentId,
         dateTime: null,
-        creator: 0,
+        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User",
         forumId: forumId
     });
     
@@ -130,7 +133,7 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
                     <div class="ml-5 p-0.5 bg-white">
                         <div class="items-center justify-start mb-1 flex gap-4">
                             <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                                {creator}HELLO {" "} 
+                                {creator == auth.currentUser.email ? "You" : creator}HELLO {" "} 
                                 <span className=" ml-1.5 font-normal text-black whitespace-normal">
                                     {content}
                                 </span>
