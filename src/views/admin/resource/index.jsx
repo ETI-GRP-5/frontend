@@ -15,6 +15,7 @@ const ResourceUpload = () => {
     const [localFilePath, setLocalFilePath] = useState('');
     const [selectedResource, setSelectedResource] = useState(null);
     const [resources, setResources] = useState([]);
+    const [resourceCount, setResourceCount] = useState(0);
     const [projectId, setProjectId] = useState(localStorage.getItem("projectId"));
 
     useEffect(() => {
@@ -25,7 +26,15 @@ const ResourceUpload = () => {
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Fetched resources:', data);
-                    setResources(data);
+                    // Extract resources and resourceCount from the response
+                    const { resources, resourceCount } = data;
+
+                    // Store the resource count in local storage
+                    localStorage.setItem('resourceCount', resourceCount);
+
+                    // Update the state with the resources and resource count
+                    setResources(resources);
+                    setResourceCount(resourceCount);
                 } else {
                     console.error('Failed to fetch resources:', response.statusText);
                 }
