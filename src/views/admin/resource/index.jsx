@@ -23,7 +23,7 @@ const ResourceUpload = () => {
         console.log('Fetching resources...');
         const fetchResources = async () => {
             try {
-                const response = await fetch(`http://localhost:3011/showresource/${projectId}`);
+                const response = await fetch(`http://localhost:5011/showresource/${projectId}`);
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Fetched resources:', data);
@@ -81,7 +81,7 @@ const ResourceUpload = () => {
         },
     };
     const handleDownload = (filePath) => {
-        const downloadUrl = `http://localhost:3011/download?filePath=${encodeURIComponent(filePath)}`;
+        const downloadUrl = `http://localhost:5011/download?filePath=${encodeURIComponent(filePath)}`;
         // Create a hidden link element
         const link = document.createElement('a');
         link.href = downloadUrl;
@@ -95,7 +95,7 @@ const ResourceUpload = () => {
     const handleDelete = async () => {
         if (selectedResource) {
             try {
-                const response = await fetch(`http://localhost:3011/deleteresource?filePath=${encodeURIComponent(selectedResource.FilePath)}`, {
+                const response = await fetch(`http://localhost:5011/deleteresource?filePath=${encodeURIComponent(selectedResource.FilePath)}`, {
                     method: 'DELETE',
                 });
 
@@ -134,7 +134,7 @@ const ResourceUpload = () => {
             setIsUploading(true);
             const auth = getAuth();
             const authToken = await getAuthToken(auth);
-            const response = await fetch(`http://localhost:3011/resource/${projectId}`, {
+            const response = await fetch(`http://localhost:5011/resource/${projectId}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
