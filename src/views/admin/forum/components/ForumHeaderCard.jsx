@@ -135,12 +135,13 @@ export default function ForumHeaderCard ({id}) {
         try {
             const response = await PostNewComment({ ...newComment, dateTime: dateAndTime});
             console.log("response", response);
+            fetchData();
+            setNewComment({ ...newComment, content: "" }); 
         } catch (error) {
             console.log("error", error);
         }
         //window.location.reload();
-        fetchData();
-        setNewComment({ ...newComment, content: "" });
+        
     }
 
 

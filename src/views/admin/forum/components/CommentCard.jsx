@@ -138,11 +138,13 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
         try {
             const response = await PostNewReply({ ...newReply, dateTime: dateAndTime});
             console.log("response", response);
+            setOpen(false);
+            //window.location.reload();
+            fetchData();
         } catch (error) {
             console.log("error", error);
         }
-        //window.location.reload();
-        fetchData();
+        
     }
 
 
