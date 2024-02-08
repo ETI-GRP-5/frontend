@@ -8,6 +8,7 @@ import SearchView from "views/admin/search"; //New search in side bar
 import FileUploadView from "views/admin/resource"
 import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
 import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";
+import TaskView from "views/admin/task"; //Zach is testing task
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";
@@ -90,6 +91,13 @@ const routes = [
     path: "resource", // Adjust the path to include the search query as a parameter
     icon: <MdHome className="h-6 w-6" />,
     component: <FileUploadView />,
+  },
+  {//For testing of creating and deleting tasks
+    name: "Task",
+    layout: "/admin",
+    path: "task", // Adjust the path to include the search query as a parameter
+    icon: <MdHome className="h-6 w-6" />,
+    component: <TaskView />,
   },
 ];
 export default routes;
