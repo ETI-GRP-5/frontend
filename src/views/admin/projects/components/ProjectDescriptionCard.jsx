@@ -5,9 +5,11 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import GetProjectDataById from "../../../../api/project/getProjectDataById";
 import SDGs from "../variables/sdg.json";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
 import UpdateProject from "../../../../api/project/updateCurrentProject";
 import JoinNewProject from "../../../../api/project/joinNewProject";
 import LeaveCurrentProject from "../../../../api/project/leaveCurrentProject";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -15,35 +17,54 @@ function classNames(...classes) {
 
 export default function ProjectDescriptionCard (props) {
 
+    const { user } = useAuth();
     const auth = getAuth();
-    console.log(auth.currentUser)
+    console.log("user", user);
 
 
     const sdgCategories = SDGs;
     const [project, setProject] = useState(null);
     const [newStatus, setNewStatus] = useState("");
     const [memberList, setMemberList] = useState(null);
+    const [username, setUsername] = useState("");
+
+    async function fetchData () {
+        try {
+            // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+            const response = await GetProjectDataById(localStorage.getItem("projectId"));
+            if (response.status == "Success") {
+                setProject(response.data.projectData);
+                console.log("project", response.data.projectData);
+            }
+            console.log("response", response);
+            //const json = await response.json();
+            // sortSdg(json);
+            // setSdg(json);
+        } catch (error) {
+            console.log("error", error);
+        }
+    }
 
     useEffect(() => {
 
         const projectId = localStorage.getItem("projectId");
-        //fetch the api in a try catch block
-        const fetchData = async () => {
-            try {
-                // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
-                const response = await GetProjectDataById(projectId);
-                if (response.status == "Success") {
-                    setProject(response.data.projectData);
-                    console.log("project", response.data.projectData);
-                }
-                console.log("response", response);
-                //const json = await response.json();
-                // sortSdg(json);
-                // setSdg(json);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
+        // //fetch the api in a try catch block
+        // const fetchData = async () => {
+        //     try {
+        //         // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+        //         const response = await GetProjectDataById(projectId);
+        //         if (response.status == "Success") {
+        //             setProject(response.data.projectData);
+        //             console.log("project", response.data.projectData);
+        //         }
+        //         console.log("response", response);
+        //         //const json = await response.json();
+        //         // sortSdg(json);
+        //         // setSdg(json);
+        //     } catch (error) {
+        //         console.log("error", error);
+        //     }
+        // };
 
         if (projectId) {
             console.log("projectId", projectId);
@@ -51,6 +72,26 @@ export default function ProjectDescriptionCard (props) {
         }
         
     }, []);
+
+
+    useEffect(() => {
+        async function fetchUsername() {
+            try {
+                const response = await GetUserDataById(project.creator);
+                if (response.status === "Success") {
+                    setUsername(response.data.name);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        if (project?.creator != null){
+            fetchUsername();
+        }
+        
+    }, [project?.creator]);
+
 
     function findSDGName(sdg) {
         for (let i = 0; i < sdgCategories.length; i++) {
@@ -98,7 +139,8 @@ export default function ProjectDescriptionCard (props) {
             try {
                 const response = await UpdateProject(id, status);
                 console.log("response", response);
-                window.location.reload();
+                //window.location.reload();
+                fetchData();
             } catch (error) {
                 console.log("error", error);
             }
@@ -111,12 +153,13 @@ export default function ProjectDescriptionCard (props) {
 
     async function handleJoinProject() {
         const projectId = localStorage.getItem("projectId");
-        const userId = auth.currentUser.uid;
+        const userId = user.uid;
         try {
             const response = await JoinNewProject(projectId, userId);
             console.log("response", response);
             if (response.status == "Success") {
-                window.location.reload();
+                //window.location.reload();
+                fetchData();
             }
             // window.location.reload();
         } catch (error) {
@@ -128,12 +171,13 @@ export default function ProjectDescriptionCard (props) {
 
     async function handleLeaveProject() {
         const projectId = localStorage.getItem("projectId");
-        const userId = auth.currentUser.uid;
+        const userId = user.uid;
         try {
             const response = await LeaveCurrentProject(projectId, userId);
             console.log("response", response);
             if (response.status == "Success") {
-                window.location.reload();
+                //window.location.reload();
+                fetchData();
             }
             // window.location.reload();
         } catch (error) {
@@ -149,7 +193,8 @@ export default function ProjectDescriptionCard (props) {
 
 
   
-    if (!project || !auth.currentUser) {
+    if (!project || !user) {
+        console.log("project", project);
         return <div>Loading...</div>;
     }
     else {
@@ -175,14 +220,14 @@ export default function ProjectDescriptionCard (props) {
                                 By {" "}
                             </p>
                             <p className="text-lg font-bold text-black dark:text-white">
-                                {auth.currentUser.email == null || project.creator == auth.currentUser.email ? "You" : project.creator}{" "}
+                                {project.creator == user.uid ? "You" : username || project.creator}{" "}
                             </p>
                         </div>
                         {/* Basic Project Information Component */}
                         <div className="w-full flex flex-row divide-x-2 divide-black items-center justify-between">
                             <div className="flex flex-col items-center justify-center w-full">
                                 <p className="text-2xl font-bold text-black dark:text-white">
-                                    90
+                                    {project?.members?.length > 0 ? project.members.length : 0}
                                 </p>
                                 <p className="text-md font-medium text-navy-700 dark:text-white">
                                     member(s)
@@ -207,11 +252,11 @@ export default function ProjectDescriptionCard (props) {
                         </div>
                         {/* Join/Leave Project Button Component */}
                         <div className="flex items-center justify-between flex-col w-full">
-                            {auth.currentUser.email == null || project.creator == auth.currentUser.email ? (
+                            {user.uid == null || project.creator == user.uid ? (
                                 <></>
                             ) : (
                                 <>
-                                    {project?.members?.includes(auth.currentUser.uid) ? (
+                                    {project?.members?.includes(user.uid) ? (
                                         <button
                                             className="linear w-full rounded-md bg-red-500 px-7 py-2 text-base font-medium text-white transition duration-200 hover:bg-red-600 active:bg-red-700 border border-black"
                                             onClick={handleLeaveProject}

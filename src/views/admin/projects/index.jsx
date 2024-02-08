@@ -22,6 +22,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import GetAllProjects from "../../../api/project/getAllProjects";
 import PostNewProject from "../../../api/project/postNewProject";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -34,6 +35,7 @@ function classNames(...classes) {
 
 const Marketplace = () => {
 
+    const { user } = useAuth();
     const auth = getAuth();
 
 
@@ -44,48 +46,48 @@ const Marketplace = () => {
         endDate: "",
         status: "Created",
         category: "",
-        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User",
+        creator: user ? (user.uid !== null ? user.uid : "Unknown User") : "Unknown User",
     });
     const [currentProjects, setCurrentProjects] = useState(null);
     const [sdgFilter, setSdgFilter] = useState(""); // State to store the SDG filter
     const [sdgCategories, setSdgCategories] = useState(null); // State to store the SDG categories
 
 
-    // useEffect(() => {
-    //     //fetch the api in a try catch block
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch("http://localhost:3010/getProject");
-    //             const json = await response.json();
-    //             // sortSdg(json);
-    //             // setSdg(json);
-    //             setCurrentProjects(json);
-    //             //console.log("json", json);
-    //         } catch (error) {
-    //             console.log("error", error);
-    //         }
-    //     };
-    //     fetchData();
-    // }, []);
+    async function getApiResponse(){
+        try {
+            const response = await GetAllProjects();
+            if (response.status == "Success") {
+                //console.log("Correct Response", response.data);
+                setCurrentProjects(response.data);
+                setSdgCategories(SDGs);
+            } else if (response.message == "No projects found.") {
+                console.log("No projects found.");
+                setCurrentProjects([]);
+            }
+            console.log("response123321", response);
+        } catch (error) {
+            console.log("error", error);
+        }
+    }
 
     useEffect(() => {
         //fetch the api in a try catch block
-        const getApiResponse = async () => {
-            try {
-                const response = await GetAllProjects();
-                if (response.status == "Success") {
-                    //console.log("Correct Response", response.data);
-                    setCurrentProjects(response.data);
-                    setSdgCategories(SDGs);
-                } else if (response.message == "No projects found.") {
-                    console.log("No projects found.");
-                    setCurrentProjects([]);
-                }
-                console.log("response", response);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
+        // const getApiResponse = async () => {
+        //     try {
+        //         const response = await GetAllProjects();
+        //         if (response.status == "Success") {
+        //             //console.log("Correct Response", response.data);
+        //             setCurrentProjects(response.data);
+        //             setSdgCategories(SDGs);
+        //         } else if (response.message == "No projects found.") {
+        //             console.log("No projects found.");
+        //             setCurrentProjects([]);
+        //         }
+        //         console.log("response", response);
+        //     } catch (error) {
+        //         console.log("error", error);
+        //     }
+        // };
         getApiResponse();
     }, []);
 
@@ -121,24 +123,6 @@ const Marketplace = () => {
         setNewProject({ ...newProject, [type]: input });
     }
 
-    // async function handleCreateNewProject() {
-    //     console.log("newProject:", newProject);
-        
-    //     try {
-    //         const response = await fetch("http://localhost:3010/postProject", {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify({ projectData: newProject }), // Send data in the expected format
-    //         });
-    //         console.log("response", response);
-    //     } catch (error) {
-    //         console.log("error", error);
-    //     }
-
-    //     setOpen(false);
-    //     window.location.reload();
-    // }
-
 
     async function handleCreateNewProject() {
         console.log("newProject:", newProject);
@@ -151,7 +135,8 @@ const Marketplace = () => {
         }
 
         setOpen(false);
-        window.location.reload();
+        getApiResponse();
+        //window.location.reload();
     }
 
 
@@ -182,7 +167,6 @@ const Marketplace = () => {
                     {/* Recently Add NFTs */}
                     <div className="flex flex-row w-full overflow-x-auto gap-5" id="categories-scroll">
                         {sdgCategories.map((sdg, key) => (
-                            console.log("sdg", sdg),
                             <button key={key} className="w-full h-full" onClick={() => handleSdgFilterClick(sdg.number)}>
                                 <SdgCategoryCard
                                     name={sdg.name}
@@ -222,7 +206,7 @@ const Marketplace = () => {
                                             name={project.projectData.name}
                                             description={project.projectData.description}
                                             creator={project.projectData.creator}
-                                            members={100}
+                                            members={project.projectData.members != null || project.projectData.members.length > 0 ? project.projectData.members.length : 0}
                                             sdg={project.projectData.category}
                                             id={project.id}
                                         />
@@ -235,49 +219,6 @@ const Marketplace = () => {
 
                         
                     </div>
-    
-                    {/* Recenlty Added setion */}
-                    {/* <div className="mb-5 mt-16 flex items-center justify-between px-2">
-                        <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
-                            Recently Joined
-                        </h4>
-                    </div> */}
-    
-                    {/* Recently Add NFTs */}
-                    {/* <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-                        <ProjectCard
-                            name="Abstract Colors"
-                            description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                            creator="Esthera Jackson"
-                            members="91"
-                            sdg="1"
-                            id={5}
-                        />
-                        <ProjectCard
-                            name="ETH AI Brain"
-                            description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                            creator="Nick Wilson"
-                            members="7"
-                            sdg="2"
-                            id={6}
-                        />
-                        <ProjectCard
-                            name="Mesh Gradients"
-                            description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                            creator="Will Smith"
-                            members="291"
-                            sdg="3"
-                            id={7}
-                        />
-                        <ProjectCard
-                            name="Mesh Gradients"
-                            description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                            creator="Will Smith"
-                            members="291"
-                            sdg="4"
-                            id={8}
-                        />
-                    </div> */}
                     </div>
                 </div>
     

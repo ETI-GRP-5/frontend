@@ -7,15 +7,19 @@ import SDGs from "../variables/sdg.json";
 import GetCommentDataById from "../../../../api/forum/getCommentsByProjectId";
 import GetRepliesById from "../../../../api/forum/getRepliesByProjectId";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 const ForumCard = ({ title, content, creator, comments, category, id, extra }) => {
 
     const auth = getAuth();
+    const { user } = useAuth();
 
 
     //const [heart, setHeart] = useState(true);
     const [commentNo, setCommentNo] = useState(0);
     const [replyNo, setReplyNo] = useState(0);
+    const [username, setUsername] = useState("");
 
     function storeForumId() {
         localStorage.setItem("forumId", id);
@@ -64,7 +68,19 @@ const ForumCard = ({ title, content, creator, comments, category, id, extra }) =
         
     }, []);
 
-
+    useEffect(() => {
+        async function fetchUsername() {
+            try {
+                const response = await GetUserDataById(creator);
+                if (response.status === "Success") {
+                    setUsername(response.data.name);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchUsername();
+    }, [creator]);
 
     // write a function to get the sdg id from the SDG json file
     function getSDG(sdg) {
@@ -99,7 +115,7 @@ const ForumCard = ({ title, content, creator, comments, category, id, extra }) =
                                         {title}{" "}
                                     </p>
                                     <p className="w-full text-sm font-medium text-gray-600">
-                                        By {creator == auth.currentUser.email ? "You" : creator}{" "}
+                                        By {creator == user.uid ? "You" : username || creator}{" "}
                                     </p>
                                 </div>
                                 

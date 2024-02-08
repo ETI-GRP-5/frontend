@@ -4,6 +4,8 @@ import GetForumDataById from "../../../../api/forum/getForumDataById";
 import PostNewComment from "../../../../api/forum/postNewComment";
 import SDGs from "../variables/sdg.json";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 
 
@@ -14,39 +16,69 @@ function classNames(...classes) {
 
 export default function ForumHeaderCard ({id}) {
 
+    const { user } = useAuth();
     const auth = getAuth();
 
     const [forum, setForum] = useState(null);
+    const [username, setUsername] = useState("");
     const [newComment, setNewComment] = useState({
         content: "",
         forumId: id,
         dateTime: null,
-        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User"
+        creator: user ? (user.uid !== null ? user.uid : "Unknown User") : "Unknown User"
     });
+
+    async function fetchData () {
+        try {
+            // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+            const response = await GetForumDataById(id);
+            if (response.status == "Success") {
+                setForum(response.data.forumData);
+            }
+            console.log("response", response);
+        } catch (error) {
+            console.log("error", error);
+        }
+    }
 
     useEffect(() => {
 
         //const forumId = localStorage.getItem("forumId");
         //fetch the api in a try catch block
-        const fetchData = async () => {
-            try {
-                // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
-                const response = await GetForumDataById(id);
-                if (response.status == "Success") {
-                    setForum(response.data.forumData);
-                }
-                console.log("response", response);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
+        // const fetchData = async () => {
+        //     try {
+        //         // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+        //         const response = await GetForumDataById(id);
+        //         if (response.status == "Success") {
+        //             setForum(response.data.forumData);
+        //         }
+        //         console.log("response", response);
+        //     } catch (error) {
+        //         console.log("error", error);
+        //     }
+        // };
 
         if (id) {
-            console.log("forumId", id);
+            // console.log("forumId", id);
             fetchData();
         }
         
     }, []);
+
+    useEffect(() => {
+        async function fetchUsername() {
+            try {
+                const response = await GetUserDataById(forum?.creator);
+                if (response.status === "Success") {
+                    setUsername(response.data.name);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        fetchUsername();
+    }, [forum?.creator]);
 
     function calculateTimeDifference (dateTime) {
         const currentTime = new Date();
@@ -106,7 +138,9 @@ export default function ForumHeaderCard ({id}) {
         } catch (error) {
             console.log("error", error);
         }
-        window.location.reload();
+        //window.location.reload();
+        fetchData();
+        setNewComment({ ...newComment, content: "" });
     }
 
 
@@ -150,7 +184,7 @@ export default function ForumHeaderCard ({id}) {
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-row gap-4 items-end">
                             <h5 className="text-base font-bold text-navy-700 dark:text-white leading-none">
-                            {forum.creator == auth.currentUser.email ? "You" : forum.creator}
+                            {forum.creator == user.uid ? "You" : username || forum.creator}
                             </h5>
                             <p className="text-xs font-medium text-gray-300 leading-none">
                             {calculateTimeDifference(forum.dateTime)}
@@ -177,6 +211,7 @@ export default function ForumHeaderCard ({id}) {
                             rows="3" 
                             class="block p-3 w-full text-sm text-black font-medium bg-gray-50 rounded-lg border border-gray-300" 
                             placeholder="Type here to reply..."
+                            value={newComment.content}
                             onChange={(e) => handleUserInput(e, "content", e.target.value)}
                         ></textarea>
 

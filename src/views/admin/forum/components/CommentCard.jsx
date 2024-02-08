@@ -9,9 +9,12 @@ import { FaReply } from "react-icons/fa";
 import PostNewReply from "../../../../api/forum/postNewReply";
 import GetRepliesById from "../../../../api/forum/getRepliesByProjectId";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 export default function CommentCard ({commentId, content, creator, dateTime, forumId}) {
 
+    const { user } = useAuth();
     const auth = getAuth();
 
     const [reply, setReply] = useState(null);
@@ -19,38 +22,72 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
         content: "",
         commentId: commentId,
         dateTime: null,
-        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User",
+        creator: user ? (user.uid !== null ? user.uid : "Unknown User") : "Unknown User",
         forumId: forumId
     });
+    const [username, setUsername] = useState("");
     
     const [open, setOpen] = useState(false);
     const cancelButtonRef = useRef(null);
 
     useEffect(() => {
+        async function fetchUsername() {
+            try {
+                const response = await GetUserDataById(creator);
+                if (response.status === "Success") {
+                    setUsername(response.data.name);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        if (creator != null){
+            fetchUsername();
+        }
+    }, [creator]);
+
+
+    async function fetchData () {
+        try {
+            // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+            const response = await GetRepliesById(forumId);
+            if (response.status == "Success") {
+                setReply(response.data);
+            } else if (response.message == "No replies found for the provided forumId.") {
+                console.log("No replies found for the provided forumId.");
+                setReply([]);
+            }
+            console.log("response", response);
+        } catch (error) {
+            console.log("error", error);
+        }
+    }
+
+    useEffect(() => {
 
         //const forumId = localStorage.getItem("forumId");
         //fetch the api in a try catch block
-        const fetchData = async () => {
-            try {
-                // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
-                const response = await GetRepliesById(forumId);
-                if (response.status == "Success") {
-                    setReply(response.data);
-                } else if (response.message == "No replies found for the provided forumId.") {
-                    console.log("No replies found for the provided forumId.");
-                    setReply([]);
-                }
-                console.log("response", response);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
+        // const fetchData = async () => {
+        //     try {
+        //         // const response = await fetch(`http://localhost:3010/getProject/${projectId}`);
+        //         const response = await GetRepliesById(forumId);
+        //         if (response.status == "Success") {
+        //             setReply(response.data);
+        //         } else if (response.message == "No replies found for the provided forumId.") {
+        //             console.log("No replies found for the provided forumId.");
+        //             setReply([]);
+        //         }
+        //         console.log("response", response);
+        //     } catch (error) {
+        //         console.log("error", error);
+        //     }
+        // };
 
         if (forumId) {
             console.log("forumId", forumId);
             fetchData();
         }
-        
     }, []);
 
 
@@ -104,7 +141,8 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
         } catch (error) {
             console.log("error", error);
         }
-        window.location.reload();
+        //window.location.reload();
+        fetchData();
     }
 
 
@@ -133,7 +171,7 @@ export default function CommentCard ({commentId, content, creator, dateTime, for
                     <div class="ml-5 p-0.5 bg-white">
                         <div class="items-center justify-start mb-1 flex gap-4">
                             <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                                {creator == auth.currentUser.email ? "You" : creator} {" "} 
+                                {creator == user.uid ? "You" : username || creator} {" "} 
                                 <span className=" ml-1.5 font-normal text-black whitespace-normal">
                                     {content}
                                 </span>
