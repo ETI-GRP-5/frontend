@@ -1,7 +1,6 @@
 version: "3.8"
 services:
     ui:
-        image: rayz1n/eti-grp-5-ui  # Use your custom image here
         ports:
             - 3000:3000
 networks:

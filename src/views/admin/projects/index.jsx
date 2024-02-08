@@ -1,24 +1,11 @@
-import NFt2 from "assets/img/nfts/Nft2.png";
-import NFt4 from "assets/img/nfts/Nft4.png";
-import NFt3 from "assets/img/nfts/Nft3.png";
-import NFt5 from "assets/img/nfts/Nft5.png";
-import NFt6 from "assets/img/nfts/Nft6.png";
-import avatar1 from "assets/img/avatars/avatar1.png";
-import avatar2 from "assets/img/avatars/avatar2.png";
-import avatar3 from "assets/img/avatars/avatar3.png";
 import Datepicker from "react-tailwindcss-datepicker"; 
 import SDGs from "../projects/variables/sdg.json"
-
-
 import ProjectCard from "../projects/components/ProjectCard";
 import SdgCategoryCard from "./components/CategoryCard";
 import { TiPlus } from "react-icons/ti";
-
-
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition, Menu } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-
 import GetAllProjects from "../../../api/project/getAllProjects";
 import PostNewProject from "../../../api/project/postNewProject";
 import { getAuth } from "firebase/auth";
