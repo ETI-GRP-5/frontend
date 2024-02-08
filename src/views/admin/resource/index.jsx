@@ -188,6 +188,19 @@ const ResourceUpload = () => {
                     <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Close</button>
                 </div>
             </Modal>
+            <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" className="absolute w-1/2 h-1/2 bg-white border border-black rounded-md  z-[99] top-1/2 left-[60%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                <h2 className='text-2xl mb-5 font-bold'>
+                    <b>Confirm Deletion</b>
+                </h2>
+                <p className='text-2x1'>Are you sure you want to delete this resource?</p>
+                <p className='text-2x1'>Once you delete the resource, it cannot be recovered.</p>
+
+                <div className='w-full flex flex-row gap-20 items-center justify-center mt-16'>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={handleDelete}>Confirm</button>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Cancel</button>
+                </div>
+            </Modal>
+            {/*
             <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" style={modalStyles}>
                 <h2 style={{ fontSize: '30px', marginBottom: '20px', marginLeft: '30%' }}><b>Confirm Deletion</b></h2>
                 <p style={{ fontSize: '20px', marginLeft: '20%' }}>Are you sure you want to delete this resource?</p>
@@ -198,7 +211,7 @@ const ResourceUpload = () => {
                     </button>
                     <button style={{ backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={closeModal}>Cancel</button>
                 </div>
-            </Modal>
+                </Modal>*/}
         </div >
     );
 };
