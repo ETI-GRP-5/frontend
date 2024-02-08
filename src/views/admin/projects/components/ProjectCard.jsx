@@ -1,16 +1,17 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "components/card";
 import { Link } from 'react-router-dom';
 import SDGs from "../variables/sdg.json";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "provider/AuthProvider";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 const ProjectCard = ({ name, description, creator, members, sdg, extra, id }) => {
 
-
+  const { user } = useAuth();
   const auth = getAuth();
-
-  //console.log(auth.currentUser)
+  const [username, setUsername] = useState("");
   
   // create a function to store the project id in local storage
   function storeProjectId() {
@@ -24,6 +25,22 @@ const ProjectCard = ({ name, description, creator, members, sdg, extra, id }) =>
     return SDGs.filter((sdg) => sdg.id == parseInt(sdgNumber))[0].id
   }
 
+  useEffect(() => {
+    async function fetchUsername() {
+      try {
+        const response = await GetUserDataById(creator);
+        if (response.status === "Success") {
+          setUsername(response.data.name);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+    fetchUsername();
+  }, [creator]);
+
+  
   return (
     <Link 
       to={{
@@ -51,7 +68,7 @@ const ProjectCard = ({ name, description, creator, members, sdg, extra, id }) =>
 
             <div className="w-full flex items-start lg:items-center justify-start lg:justify-between flex-col lg:flex-row">
               <p className="text-sm font-bold text-brand-500 dark:text-white">
-                By: {creator == auth.currentUser.email ? "You" : creator}{" "}
+              By: {creator === user.uid ? "You" : username || creator}{" "}
               </p>
               <p className="text-sm font-bold text-brand-500 dark:text-white">
                 Members: {members} <span>ppl</span>

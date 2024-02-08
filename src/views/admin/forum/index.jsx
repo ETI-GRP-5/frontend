@@ -9,6 +9,7 @@ import avatar2 from "assets/img/avatars/avatar2.png";
 import avatar3 from "assets/img/avatars/avatar3.png";
 import GetProjects from "../../../api/project-backend/getProjects";
 import SDGs from "../projects/variables/sdg.json"
+import { useAuth } from "provider/AuthProvider";
 
 
 import { BsChatLeftText } from "react-icons/bs";
@@ -30,40 +31,60 @@ const sdgCategories = SDGs;
 
 export default function MainForumPage () {
 
+    const { user } = useAuth();
+    console.log("user", user);
     const auth = getAuth();
-
-    console.log("auth.currentUser", auth.currentUser)
 
     const [newForum, setNewForum] = useState({
         title: "",
         content: "",
         dateTime: "",
         category: "",
-        creator: auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "Unknown User") : "Unknown User"
+        creator: user ? (user.uid !== null ? user.uid : "Unknown User") : "Unknown User"
     });
 
     const [currentForumData, setCurrentForumData] = useState(null); 
     const [sdgFilter, setSdgFilter] = useState(""); // State to store the SDG filter
     const [sdgCategories, setSdgCategories] = useState(SDGs);
 
+
+    async function getApiResponse () {
+        try {
+            const response = await GetAllForums();
+            if (response.status == "Success" || response.status == 200) {
+                console.log("Correct Response", response.data);
+                setCurrentForumData(response.data);
+                // setSdgCategories(SDGs);
+            } else if (response.message == "No forums found.") {
+                console.log("No forums found.");
+                setCurrentForumData([]);
+            }
+            console.log("response", response);
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+
     useEffect(() => {
         //fetch the api in a try catch block
-        const getApiResponse = async () => {
-            try {
-                const response = await GetAllForums();
-                if (response.status == "Success" || response.status == 200) {
-                    console.log("Correct Response", response.data);
-                    setCurrentForumData(response.data);
-                    // setSdgCategories(SDGs);
-                } else if (response.message == "No forums found.") {
-                    console.log("No forums found.");
-                    setCurrentForumData([]);
-                }
-                console.log("response", response);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
+        // const getApiResponse = async () => {
+        //     try {
+        //         const response = await GetAllForums();
+        //         if (response.status == "Success" || response.status == 200) {
+        //             console.log("Correct Response", response.data);
+        //             setCurrentForumData(response.data);
+        //             // setSdgCategories(SDGs);
+        //         } else if (response.message == "No forums found.") {
+        //             console.log("No forums found.");
+        //             setCurrentForumData([]);
+        //         }
+        //         console.log("response", response);
+        //     } catch (error) {
+        //         console.log("error", error);
+        //     }
+        // };
+
         getApiResponse();
     }, []);
 
@@ -110,7 +131,8 @@ export default function MainForumPage () {
         }
     
         setOpen(false);
-        window.location.reload();
+        // window.location.reload();
+        getApiResponse();
     }
 
     if (currentForumData == null || sdgCategories == null) {
@@ -135,7 +157,6 @@ export default function MainForumPage () {
                             <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
                                 All Forums
                             </h4>
-                            {/* {auth === null ? "User" : (auth.currentUser ? (auth.currentUser.email !== null ? auth.currentUser.email : "User") : "User")} */}
                         </div>
     
                         {/* NFTs trending card */}
@@ -149,6 +170,7 @@ export default function MainForumPage () {
                                     <>
                                         {currentForumData.map((forum, key) => (
                                             console.log("forum123", forum.forumData),
+                                            <div key={key} className={`w-full h-full ${sdgFilter == "" ? "block" : forum.forumData.category != sdgFilter ? "hidden" : "block"}`}>
                                                 <ForumCard
                                                     title={forum.forumData.title}
                                                     content={forum.forumData.content}
@@ -157,6 +179,8 @@ export default function MainForumPage () {
                                                     category={forum.forumData.category}
                                                     id={forum.id}
                                                 />
+                                            </div>
+                                                
                                             ))}   
                                     </>
                                 )
@@ -190,7 +214,7 @@ export default function MainForumPage () {
                             <div className="flex w-full flex-col gap-y-1 my-5 items-start">
                                 {sdgCategories.map((category, key) => (
     
-                                    <button className="flex flex-row items-center justify-start w-full gap-x-4 mx-1 whitespace-nowrap ml-2 hover:bg-gray-100 py-2.5 px-3.5 rounded-md">
+                                    <button className="flex flex-row items-center justify-start w-full gap-x-4 mx-1 whitespace-nowrap ml-2 hover:bg-gray-100 py-2.5 px-3.5 rounded-md" onClick={() => handleSdgFilterClick(category.number)}>
                                         <span>
                                             <div className={`w-3 rounded-full bg-sdg-${category.id} h-3`}/>
                                         </span>

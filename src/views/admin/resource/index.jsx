@@ -16,6 +16,7 @@ const ResourceUpload = () => {
     const [selectedResource, setSelectedResource] = useState(null);
     const [resources, setResources] = useState([]);
 
+
     useEffect(() => {
         console.log('Fetching resources...');
         const fetchResources = async () => {
