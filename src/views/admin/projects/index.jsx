@@ -193,7 +193,7 @@ const Marketplace = () => {
                                             name={project.projectData.name}
                                             description={project.projectData.description}
                                             creator={project.projectData.creator}
-                                            members={project.projectData.members != null || project.projectData.members.length > 0 ? project.projectData.members.length : 0}
+                                            members={project?.projectData?.members != null || project?.projectData?.members?.length > 0 ? project?.projectData?.members?.length : 0}
                                             sdg={project.projectData.category}
                                             id={project.id}
                                         />

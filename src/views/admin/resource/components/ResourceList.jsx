@@ -4,7 +4,7 @@ import React from 'react';
 const ResourceList = ({ resources, handleDownload, openDeleteModal }) => {
     return (
         <div style={{ marginTop: '50px' }}>
-            {resources.length > 0 ? (
+            {resources?.length > 0 ? (
                 <table style={{ width: '80%', borderCollapse: 'collapse', fontSize: '18px' }}>
                     <thead>
                         <tr style={{ borderBottom: '2px solid black', paddingBottom: '10px' }}>
