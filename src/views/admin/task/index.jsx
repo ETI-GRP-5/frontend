@@ -48,74 +48,82 @@ const TaskView = () => {
 
   return (
     <div className="container mx-auto mt-8 text-center">
-      <button
-        onClick={() => setShowFormPopup(true)}
-        className="bg-blue-500 text-white p-2 rounded-md"
-      >
-        Create New Task
-      </button>
+  {/* Create button left justified with padding */}
+  <div className="flex justify-between items-center mb-4 pl-4">
+    <h2 className="text-2xl font-bold">Tasks</h2>
+    <button
+      onClick={() => setShowFormPopup(true)}
+      className="bg-blue-500 text-white p-2 rounded-md"
+    >
+      Create New Task
+    </button>
+  </div>
 
-      {showFormPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md max-w-md">
-            <h2 className="text-lg font-bold mb-4">Create Task</h2>
-            <form onSubmit={createTask} className="mb-6">
-              <div className="flex items-center justify-center mb-4">
-                <input
-                  type="text"
-                  id="taskTitle"
-                  value={taskTitle}
-                  onChange={(e) => setTaskTitle(e.target.value)}
-                  className="p-3 w-96 border rounded-md focus:outline-none focus:border-blue-500"
-                  placeholder="Task Title"
-                  required
-                />
-              </div>
-              <div className="flex items-center justify-center mb-4">
-                <textarea
-                  id="taskDetails"
-                  value={taskDetails}
-                  onChange={(e) => setTaskDetails(e.target.value)}
-                  className="p-3 w-96 h-32 border rounded-md focus:outline-none focus:border-blue-500"
-                  placeholder="Task Details"
-                  required
-                ></textarea>
-              </div>
-              <div className="flex items-center justify-center">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white p-2 rounded-md"
-                >
-                  Create Task
-                </button>
-                <button
-                  onClick={() => setShowFormPopup(false)}
-                  className="ml-4 bg-gray-500 text-white p-2 rounded-md"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+  {showFormPopup && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      {/* Form Popup */}
+      <div className="bg-white p-4 rounded-md max-w-md">
+        <h2 className="text-lg font-bold mb-4">Create Task</h2>
+        <form onSubmit={createTask} className="mb-6">
+          {/* Input fields */}
+          <div className="flex items-center justify-center mb-4">
+            <input
+              type="text"
+              id="taskTitle"
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              className="p-3 w-96 border rounded-md focus:outline-none focus:border-blue-500"
+              placeholder="Task Title"
+              required
+            />
           </div>
-        </div>
-      )}
-
-      <h2 className="text-2xl font-bold mb-4">Tasks</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {tasks.map(task => (
-          <div key={task.task_id} className="m-4 p-4 bg-gray-100 rounded-md text-center">
-            <h3 className="text-lg font-semibold">{task.task_title}</h3>
-            <p>{task.task_details}</p>
+          <div className="flex items-center justify-center mb-4">
+            <textarea
+              id="taskDetails"
+              value={taskDetails}
+              onChange={(e) => setTaskDetails(e.target.value)}
+              className="p-3 w-96 h-32 border rounded-md focus:outline-none focus:border-blue-500"
+              placeholder="Task Details"
+              required
+            ></textarea>
+          </div>
+          {/* Buttons */}
+          <div className="flex items-center justify-center">
             <button
-              onClick={() => deleteTask(task.task_id)}
-              className="mt-2 p-2 bg-red-500 text-white rounded-md"
+              type="submit"
+              className="bg-blue-500 text-white p-2 rounded-md"
             >
-              Delete
+              Create Task
+            </button>
+            <button
+              onClick={() => setShowFormPopup(false)}
+              className="ml-4 bg-gray-500 text-white p-2 rounded-md"
+            >
+              Cancel
             </button>
           </div>
-        ))}
+        </form>
       </div>
     </div>
+  )}
+  <br />
+
+  {/* Tasks */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {tasks.map(task => (
+      <div key={task.task_id} className="m-4 p-4 bg-gray-100 rounded-md text-center">
+        <h3 className="text-lg font-semibold">{task.task_title}</h3>
+        <p>{task.task_details}</p>
+        <button
+          onClick={() => deleteTask(task.task_id)}
+          className="mt-2 p-2 bg-red-500 text-white rounded-md"
+        >
+          Delete
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
   );
 };
 
