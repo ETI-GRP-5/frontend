@@ -3,6 +3,7 @@ import React from "react";
 // Admin Imports
 import Profile from "views/admin/profile";
 import CommunityProjects from "views/admin/projects";
+import CommunityOrganisations from "views/admin/organisation"
 import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
 import FileUploadView from "views/admin/resource"
@@ -58,9 +59,9 @@ const routes = [
   {
     name: "Community Organizations",
     layout: "/admin",
-    path: "nft-marketplace",
+    path: "organ",
     icon: <VscOrganization className="h-6 w-6" />,
-    component: <SearchView />,
+    component: <CommunityOrganisations />,
     secondary: true,
   },
   {
