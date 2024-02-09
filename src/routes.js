@@ -86,14 +86,14 @@ const routes = [
     component: <SearchView />,
   },
   {//For testing of resource upload (Simon)
-    name: "Resource",
+    name: "Resource (for presentation)",
     layout: "/admin",
     path: "resource", // Adjust the path to include the search query as a parameter
     icon: <MdHome className="h-6 w-6" />,
     component: <FileUploadView />,
   },
   {//For testing of creating and deleting tasks
-    name: "Task",
+    name: "Task (for presentation)",
     layout: "/admin",
     path: "task", // Adjust the path to include the search query as a parameter
     icon: <MdHome className="h-6 w-6" />,
