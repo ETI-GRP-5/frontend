@@ -8,7 +8,7 @@ import SearchView from "views/admin/search"; //New search in side bar
 import FileUploadView from "views/admin/resource"
 import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
 import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";
-import TaskView from "views/admin/task"; //Zach is testing task
+import TaskView from "views/admin/task";
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";

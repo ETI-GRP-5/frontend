@@ -1,5 +1,5 @@
 class ApiRoutes {
-    constructor() {}
+    constructor() { }
 
     authSVC = process.env.NEXT_PUBLIC_PORT
         ? `${process.env.NEXT_PUBLIC_DOMAIN}:5010`
