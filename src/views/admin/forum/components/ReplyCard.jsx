@@ -3,11 +3,14 @@ import { FaUser } from "react-icons/fa";
 import Card from "components/card";
 import { Fragment, useRef, useState, useEffect } from 'react';
 import { getAuth } from "firebase/auth";
+import { useAuth  } from "provider/AuthProvider";
+import GetUserDataById from "../../../../api/auth/getUserDetails";
 
 export default function ReplyCard ({content, creator, dateTime}) {
 
-
+    const { user } = useAuth();
     const auth = getAuth();
+    const [username, setUsername] = useState("");
 
 
     function calculateTimeDifference (dateTime) {
@@ -31,6 +34,22 @@ export default function ReplyCard ({content, creator, dateTime}) {
         }
     };
 
+
+    useEffect(() => {
+        async function fetchUsername() {
+          try {
+            const response = await GetUserDataById(creator);
+            if (response.status === "Success") {
+              setUsername(response.data.name);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        
+        fetchUsername();
+    }, [creator]);
+
     return (
         <div class="mb-3 ms-2 relative">
             <span class="absolute z-15 flex items-center justify-center -left-7 ring-6 ring-white dark:ring-gray-900 min-w-fit h-8 w-8 bg-white border border-black rounded-full p-[0.3rem]">
@@ -41,7 +60,7 @@ export default function ReplyCard ({content, creator, dateTime}) {
             <div class="ml-5 p-0.5 bg-white">
                 <div class="items-center justify-start mb-1 flex gap-4">
                     <p className="text-sm font-extrabold text-black whitespace-nowrap">
-                        {creator == auth.currentUser.email ? "You" : creator} {" "} 
+                        {creator == user.uid ? "You" : username || creator} {" "} 
                         <span className=" ml-1.5 font-normal text-black whitespace-normal">
                             {content}
                         </span>

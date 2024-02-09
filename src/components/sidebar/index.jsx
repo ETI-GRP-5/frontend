@@ -23,7 +23,7 @@ const Sidebar = ({ open, onClose }) => {
       <div className={`mx-[35px] mt-[35px] flex flex-col items-center`}>
         <img src={require("./../../assets/img/sdg-banner/E_SDG_logo_UN_emblem_horizontal_trans_WEB.png")} alt="sdg logo" className="w-[200px] h-auto mb-2"/>
         <div className="h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 dark:text-white">
-          UN SDG <span class="font-medium">Collab</span>
+          SDG <span class="font-medium">Collab</span>
         </div>
       </div>
       <div class="mt-[55px] mb-7 h-px bg-gray-300 dark:bg-white/30" />

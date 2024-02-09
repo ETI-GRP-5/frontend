@@ -1,19 +1,15 @@
 import React from "react";
 
 // Admin Imports
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
-import RTLDefault from "views/rtl/default";
 import CommunityProjects from "views/admin/projects";
 import CommunityOrganisations from "views/admin/organisation"
 import CommunityForum from "views/admin/forum";
 import SearchView from "views/admin/search"; //New search in side bar
 import FileUploadView from "views/admin/resource"
-// import ProjectDetails from "../src/components/project/ProjectDetails.jsx";
 import ProjectDetails from "../src/views/admin/projects/[id]/index.jsx";
 import DiscussionDetails from "../src/views/admin/forum/[id]/index.jsx";
+import TaskView from "views/admin/task"; //Zach is testing task
 
 // Auth Imports
 import SignIn from "views/auth/SignIn";
@@ -22,11 +18,7 @@ import SignIn from "views/auth/SignIn";
 import {
   MdHome,
   MdOutlineShoppingCart,
-  MdBarChart,
-  MdPerson,
-  MdLock,
   MdForum,
-  MdNotificationsActive 
 } from "react-icons/md";
 import { FaSearch } from 'react-icons/fa';
 import { ImDropbox } from "react-icons/im";
@@ -35,48 +27,27 @@ import { IoPersonSharp } from "react-icons/io5";
 
 
 const routes = [
+  // {
+  //   name: "Main Dashboard (X touch)",
+  //   layout: "/admin",
+  //   path: "default",
+  //   icon: <MdHome className="h-6 w-6" />,
+  //   component: <MainDashboard />,
+  // },
   {
-    name: "Main Dashboard (X touch)",
+    name: "Community Projects",
     layout: "/admin",
     path: "default",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <MainDashboard />,
+    icon: <ImDropbox className="h-6 w-6" />,
+    component: <CommunityProjects />,
   },
   {
-    name: "NFT Marketplace (X touch)",
+    name: " ",
     layout: "/admin",
-    path: "nft-marketplace",
+    path: "projects/:id",
     icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
-  },
-  {
-    name: "Data Tables (X touch)",
-    layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "data-tables",
-    component: <DataTables />,
-  },
-  {
-    name: "Profile (X touch)",
-    layout: "/admin",
-    path: "profile",
-    icon: <MdPerson className="h-6 w-6" />,
-    component: <Profile />,
-  },
-  {
-    name: "Sign In (X touch)",
-    layout: "/auth",
-    path: "sign-in",
-    icon: <MdLock className="h-6 w-6" />,
-    component: <SignIn />,
-  },
-  {
-    name: "RTL Admin (X touch)",
-    layout: "/rtl",
-    path: "rtl",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    component: <ProjectDetails />,
+    css: "hidden",
   },
   {
     name: "Profile Settings",
@@ -94,31 +65,12 @@ const routes = [
     secondary: true,
   },
   {
-    name: "Community Projects",
-    layout: "/admin",
-    path: "projects",
-    icon: <ImDropbox className="h-6 w-6" />,
-    component: <CommunityProjects />,
-  },
-
-  {
-    name: " ",
-    layout: "/admin",
-    path: "projects/:id",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-    component: <ProjectDetails />,
-    css: "hidden",
-  },
-
-
-  {
     name: "Community Forum",
     layout: "/admin",
     path: "forum",
     icon: <MdForum className="h-6 w-6" />,
     component: <CommunityForum />,
   },
-
   {
     name: " ",
     layout: "/admin",
@@ -126,16 +78,6 @@ const routes = [
     icon: <MdOutlineShoppingCart className="h-6 w-6" />,
     component: <DiscussionDetails />,
     css: "hidden",
-  },
-
-
-  {
-    name: "Notifications",
-    layout: "/admin",
-    path: "nft-marketplace",
-    icon: <MdNotificationsActive className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
   },
   {
     name: "Search",
@@ -150,6 +92,13 @@ const routes = [
     path: "resource", // Adjust the path to include the search query as a parameter
     icon: <MdHome className="h-6 w-6" />,
     component: <FileUploadView />,
+  },
+  {//For testing of creating and deleting tasks
+    name: "Task",
+    layout: "/admin",
+    path: "task", // Adjust the path to include the search query as a parameter
+    icon: <MdHome className="h-6 w-6" />,
+    component: <TaskView />,
   },
 ];
 export default routes;

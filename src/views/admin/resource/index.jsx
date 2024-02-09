@@ -15,16 +15,27 @@ const ResourceUpload = () => {
     const [localFilePath, setLocalFilePath] = useState('');
     const [selectedResource, setSelectedResource] = useState(null);
     const [resources, setResources] = useState([]);
+    const [resourceCount, setResourceCount] = useState(0);
+    const [projectId, setProjectId] = useState(localStorage.getItem("projectId"));
+
 
     useEffect(() => {
         console.log('Fetching resources...');
         const fetchResources = async () => {
             try {
-                const response = await fetch('http://localhost:3011/showresource');
+                const response = await fetch(`http://localhost:5011/showresource/${projectId}`);
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Fetched resources:', data);
-                    setResources(data);
+                    // Extract resources and resourceCount from the response
+                    const { resources, resourceCount } = data;
+
+                    // Store the resource count in local storage
+                    localStorage.setItem('resourceCount', resourceCount);
+
+                    // Update the state with the resources and resource count
+                    setResources(resources);
+                    setResourceCount(resourceCount);
                 } else {
                     console.error('Failed to fetch resources:', response.statusText);
                 }
@@ -32,7 +43,6 @@ const ResourceUpload = () => {
                 console.error('Error fetching resources:', error.message);
             }
         };
-
         fetchResources();
     }, []);
 
@@ -71,7 +81,7 @@ const ResourceUpload = () => {
         },
     };
     const handleDownload = (filePath) => {
-        const downloadUrl = `http://localhost:3011/download?filePath=${encodeURIComponent(filePath)}`;
+        const downloadUrl = `http://localhost:5011/download?filePath=${encodeURIComponent(filePath)}`;
         // Create a hidden link element
         const link = document.createElement('a');
         link.href = downloadUrl;
@@ -85,7 +95,7 @@ const ResourceUpload = () => {
     const handleDelete = async () => {
         if (selectedResource) {
             try {
-                const response = await fetch(`http://localhost:3011/deleteresource?filePath=${encodeURIComponent(selectedResource.FilePath)}`, {
+                const response = await fetch(`http://localhost:5011/deleteresource?filePath=${encodeURIComponent(selectedResource.FilePath)}`, {
                     method: 'DELETE',
                 });
 
@@ -124,7 +134,7 @@ const ResourceUpload = () => {
             setIsUploading(true);
             const auth = getAuth();
             const authToken = await getAuthToken(auth);
-            const response = await fetch('http://localhost:3011/resource', {
+            const response = await fetch(`http://localhost:5011/resource/${projectId}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -179,6 +189,19 @@ const ResourceUpload = () => {
                     <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Close</button>
                 </div>
             </Modal>
+            <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" className="absolute w-1/2 h-1/2 bg-white border border-black rounded-md  z-[99] top-1/2 left-[60%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                <h2 className='text-2xl mb-5 font-bold'>
+                    <b>Confirm Deletion</b>
+                </h2>
+                <p className='text-2x1'>Are you sure you want to delete this resource?</p>
+                <p className='text-2x1'>Once you delete the resource, it cannot be recovered.</p>
+
+                <div className='w-full flex flex-row gap-20 items-center justify-center mt-16'>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={handleDelete}>Confirm</button>
+                    <button className='px-6 py-2 border border-black rounded-md hover:bg-blueSecondary hover:text-white' onClick={closeModal}>Cancel</button>
+                </div>
+            </Modal>
+            {/*
             <Modal isOpen={isDeleteModalOpen} onRequestClose={closeModal} contentLabel="Confirm Deletion" style={modalStyles}>
                 <h2 style={{ fontSize: '30px', marginBottom: '20px', marginLeft: '30%' }}><b>Confirm Deletion</b></h2>
                 <p style={{ fontSize: '20px', marginLeft: '20%' }}>Are you sure you want to delete this resource?</p>
@@ -189,7 +212,7 @@ const ResourceUpload = () => {
                     </button>
                     <button style={{ backgroundColor: '#1f2937', color: 'white', padding: '10px 34px' }} onClick={closeModal}>Cancel</button>
                 </div>
-            </Modal>
+                </Modal>*/}
         </div >
     );
 };

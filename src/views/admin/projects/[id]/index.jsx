@@ -8,12 +8,11 @@ import ResourceService from '../../resource/index';
 
 
 const ProjectDetails = () => {
-    
+
     // get the id from the local storage
     const id = localStorage.getItem("projectId");
 
-
-    // SIMON UR CODE IS HERE
+    // parameters for resource
     const [isModalOpen, setModalOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -49,14 +48,14 @@ const ProjectDetails = () => {
         },
     };
 
-    // for fetch 
+    // for fetch of resource
     const uploadToDatabase = async () => {
         const formData = new FormData();
         formData.append('file', file);
 
         try {
             setIsUploading(true);
-            const response = await fetch('http://localhost:5050/resource', {
+            const response = await fetch('http://localhost:3011/resource', {
                 method: 'POST',
                 body: formData,
             });
@@ -85,18 +84,18 @@ const ProjectDetails = () => {
                 <div className="h-fit w-full xl:col-span-1 2xl:col-span-2 overflow-x-auto relative">
                     <div className='h-fit w-full relative'>
                         {/* Project Description Card */}
-                        <ProjectDescriptionCard id={id} className=""/>
+                        <ProjectDescriptionCard id={id} className="" />
                     </div>
-                    
+
 
 
                     {/* Resource Sharing setion */}
                     <div className="mb-3 mt-12 flex flex-col items-start gap-3 px-2">
                         <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
-                        Resources
+                            Resources
                         </h4>
                     </div>
-                        
+
                     <div className='w-full h-full relative'>
                         {/* <button className='w-full h-fit p-12 bg-white hover:bg-gray-200 border border-black rounded-md flex flex-col gap-5 justify-center items-center' onClick={handleUpload}>
                             <FaUpload className='w-10 h-auto' />
@@ -135,7 +134,7 @@ const ProjectDetails = () => {
                         /> */}
 
 
-                        {/* <ResourceService /> */}
+                        <ResourceService />
                     </div>
 
 
@@ -143,7 +142,7 @@ const ProjectDetails = () => {
                     {/* Project Tasks setion */}
                     <div className="mb-5 mt-12 flex items-center justify-between px-2">
                         <h4 className="text-2xl font-bold text-navy-700 dark:text-white">
-                        Tasks
+                            Tasks
                         </h4>
                     </div>
                 </div>
